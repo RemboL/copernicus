@@ -2,6 +2,7 @@ package pl.rembol.jme3.copernicus.ship;
 
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
+import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import com.jme3.scene.control.AbstractControl;
 import pl.rembol.jme3.copernicus.GameState;
@@ -10,10 +11,13 @@ public class Ship extends Node {
 
     private Node forwardNode;
 
+    private float speed = 0f;
+
     public Ship(GameState gameState, String modelName) {
         Node model =(Node) gameState.assetManager
                 .loadModel(modelName);
         attachChild(model);
+        model.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         model.setLocalScale(.001f);
         gameState.rootNode.attachChild(this);
 
@@ -38,7 +42,7 @@ public class Ship extends Node {
     }
 
     void moveForward(float value) {
-        move(forwardNode.getWorldTranslation().subtract(getWorldTranslation()).normalize().mult(value));
+        move(forwardNode.getWorldTranslation().subtract(getWorldTranslation()).normalize().mult(value * speed));
     }
 
     public void yawLeft(float value) {
@@ -64,8 +68,14 @@ public class Ship extends Node {
     public void rollRight(float value) {
         rotate(0, 0, value);
     }
-    
-    
+
+    public void accelerate(float value) {
+        speed += value / 12;
+    }
+
+    public void decelerate(float value) {
+        speed -= value / 12;
+    }
 
 
 }

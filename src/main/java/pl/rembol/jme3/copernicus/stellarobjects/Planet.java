@@ -26,6 +26,7 @@ public class Planet  extends Node {
         geometry.setMaterial(material);
         attachChild(geometry);
         geometry.setLocalRotation(new Quaternion().fromAngleAxis(-FastMath.HALF_PI, Vector3f.UNIT_X));
+        geometry.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         geometry.addControl(new RotateControl(.2f, Vector3f.UNIT_Z));
 
         Geometry atmosphereGeometry = new Geometry("sphere", new Sphere(36, 36, 1.05f));

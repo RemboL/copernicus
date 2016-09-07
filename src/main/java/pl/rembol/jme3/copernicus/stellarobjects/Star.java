@@ -36,11 +36,13 @@ public class Star extends Node {
 
         pointLight = new PointLight();
         pointLight.setColor(ColorRGBA.White);
+        pointLight.setRadius(10_000f);
         gameState.rootNode.addLight(pointLight);
         pointLight.setPosition(getWorldTranslation());
 
         PointLightShadowRenderer pointLightShadowRenderer = new PointLightShadowRenderer(gameState.assetManager, 1024);
         pointLightShadowRenderer.setLight(pointLight);
+        pointLightShadowRenderer.setShadowIntensity(1f);
         gameState.simpleApplication.getViewPort().addProcessor(pointLightShadowRenderer);
 
         gameState.rootNode.attachChild(this);

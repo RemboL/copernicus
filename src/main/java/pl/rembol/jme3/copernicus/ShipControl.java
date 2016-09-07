@@ -2,8 +2,10 @@ package pl.rembol.jme3.copernicus;
 
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
+import com.jme3.input.MouseInput;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
+import com.jme3.input.controls.MouseAxisTrigger;
 import pl.rembol.jme3.copernicus.ship.Ship;
 
 public class ShipControl implements AnalogListener {
@@ -19,6 +21,10 @@ public class ShipControl implements AnalogListener {
     private static final String ROLL_LEFT = "shipControl_rollLeft";
 
     private static final String ROLL_RIGHT = "shipControl_rollRight";
+
+    private static final String ACCELERATE = "shipControl_accelerate";
+
+    private static final String DECELERATE = "shipControl_decelerate";
 
     private Ship ship;
 
@@ -67,6 +73,18 @@ public class ShipControl implements AnalogListener {
         }
     }
 
+    private void accelerate(float value) {
+        if (ship != null) {
+            ship.accelerate(value);
+        }
+    }
+
+    private void decelerate(float value) {
+        if (ship != null) {
+            ship.decelerate(value);
+        }
+    }
+
     @Override
     public void onAnalog(String name, float value, float tpf) {
         switch (name) {
@@ -88,6 +106,12 @@ public class ShipControl implements AnalogListener {
             case ROLL_RIGHT:
                 rollRight(value);
                 break;
+            case ACCELERATE:
+                accelerate(value);
+                break;
+            case DECELERATE:
+                decelerate(value);
+                break;
         }
     }
 
@@ -98,6 +122,12 @@ public class ShipControl implements AnalogListener {
         registerKey(inputManager, YAW_RIGHT, KeyInput.KEY_D);
         registerKey(inputManager, ROLL_LEFT, KeyInput.KEY_Q);
         registerKey(inputManager, ROLL_RIGHT, KeyInput.KEY_E);
+
+        inputManager.addMapping(ACCELERATE, new MouseAxisTrigger(MouseInput.AXIS_WHEEL, false));
+        inputManager.addMapping(DECELERATE, new MouseAxisTrigger(MouseInput.AXIS_WHEEL, true));
+        inputManager.addListener(this, ACCELERATE);
+        inputManager.addListener(this, DECELERATE);
+
     }
 
     private void registerKey(InputManager inputManager, String name, int key) {
