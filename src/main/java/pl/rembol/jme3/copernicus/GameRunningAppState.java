@@ -6,13 +6,8 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.light.AmbientLight;
-import com.jme3.light.DirectionalLight;
-import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.shape.Sphere;
-import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.jme3.system.AppSettings;
 import pl.rembol.jme3.copernicus.ship.Ship;
 import pl.rembol.jme3.copernicus.skybox.SkyBox;
@@ -65,8 +60,11 @@ public class GameRunningAppState extends AbstractAppState {
         earth.setLocalScale(.5f);
         earth.setLocalTranslation(new Vector3f(10f, 0f, 0f));
 
-        Ship bumblebee = new Ship(gameState, "bumblebee.blend");
+        Ship bumblebee = new Ship(gameState, "bumblebee/bumblebee.blend");
         bumblebee.setLocalTranslation(new Vector3f(8f, -2f, 0f));
+
+        gameState.focusCamera.setFocusAt(bumblebee);
+        gameState.shipControl.control(bumblebee);
 
     }
 

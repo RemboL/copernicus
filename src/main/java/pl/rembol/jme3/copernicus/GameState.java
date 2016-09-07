@@ -7,6 +7,7 @@ import com.jme3.input.InputManager;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 import com.jme3.system.AppSettings;
+import pl.rembol.jme3.copernicus.camera.FocusCamera;
 import pl.rembol.jme3.rts.threads.ThreadManager;
 
 public class GameState {
@@ -21,7 +22,10 @@ public class GameState {
     public final Camera camera;
     public final InputManager inputManager;
 
+    public final FocusCamera focusCamera;
+
     public final ThreadManager threadManager = new ThreadManager();
+    public final ShipControl shipControl;
 
     public GameState(SimpleApplication simpleApplication, AppSettings settings, BulletAppState bulletAppState) {
         this.simpleApplication = simpleApplication;
@@ -34,7 +38,8 @@ public class GameState {
         camera = simpleApplication.getCamera();
         inputManager = simpleApplication.getInputManager();
 
-        new RtsCamera(this);
+        focusCamera = new FocusCamera(camera);
+        shipControl = new ShipControl(inputManager);
     }
 
 }
