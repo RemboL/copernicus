@@ -41,11 +41,11 @@ public class Ship extends Node {
         move(forwardNode.getWorldTranslation().subtract(getWorldTranslation()).normalize().mult(value));
     }
 
-    public void steerLeft(float value) {
+    public void yawLeft(float value) {
         rotate(0, value, 0);
     }
 
-    public void steerRight(float value) {
+    public void yawRight(float value) {
         rotate(0, -value, 0);
     }
 
@@ -57,11 +57,11 @@ public class Ship extends Node {
         rotate(-value, 0, 0);
     }
 
-    public void yawLeft(float value) {
+    public void rollLeft(float value) {
         rotate(0, 0, -value);
     }
 
-    public void yawRight(float value) {
+    public void rollRight(float value) {
         rotate(0, 0, value);
     }
     
