@@ -1,19 +1,21 @@
 package pl.rembol.jme3.copernicus.ship;
 
+import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import com.jme3.scene.control.AbstractControl;
 import pl.rembol.jme3.copernicus.GameState;
+import pl.rembol.jme3.copernicus.objects.SpaceObject;
 
-public class Ship extends Node {
-
-    private Node forwardNode;
+public class Ship extends SpaceObject {
 
     private float speed = 0f;
 
     public Ship(GameState gameState, String modelName) {
+        super(gameState, "ship");
+
         Node model =(Node) gameState.assetManager
                 .loadModel(modelName);
         attachChild(model);
@@ -21,18 +23,14 @@ public class Ship extends Node {
         model.setLocalScale(.001f);
         gameState.rootNode.attachChild(this);
 
-        forwardNode = new Node("forward node");
-        forwardNode.setLocalTranslation(0, 0, 1);
-        attachChild(forwardNode);
-
         addControl(new AlwaysMoveForwardControl());
     }
 
-    static class AlwaysMoveForwardControl extends AbstractControl {
+    private class AlwaysMoveForwardControl extends AbstractControl {
 
         @Override
         protected void controlUpdate(float tpf) {
-            ((Ship) getSpatial()).moveForward(tpf);
+            moveForward(tpf);
         }
 
         @Override
@@ -42,7 +40,7 @@ public class Ship extends Node {
     }
 
     void moveForward(float value) {
-        move(forwardNode.getWorldTranslation().subtract(getWorldTranslation()).normalize().mult(value * speed));
+        preciseMove(getWorldRotation().mult(Vector3f.UNIT_Z).mult(value * speed));
     }
 
     public void yawLeft(float value) {
@@ -70,11 +68,11 @@ public class Ship extends Node {
     }
 
     public void accelerate(float value) {
-        speed += value / 12;
+        speed += value;
     }
 
     public void decelerate(float value) {
-        speed -= value / 12;
+        speed -= value;
     }
 
 

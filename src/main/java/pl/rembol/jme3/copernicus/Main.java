@@ -2,8 +2,6 @@ package pl.rembol.jme3.copernicus;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppState;
-import com.jme3.math.FastMath;
-import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.plugins.blender.BlenderModelLoader;
 import com.jme3.system.AppSettings;
@@ -39,7 +37,7 @@ public class Main extends SimpleApplication {
 //		 0.7f));
 
 
-        cam.setFrustumPerspective(45f, (float)cam.getWidth() / cam.getHeight(), .001f, 200000f);
+        cam.setFrustumPerspective(45f, (float)cam.getWidth() / cam.getHeight(), .001f, 2000000f);
         cam.setLocation(new Vector3f(8f, .5f, -.5f));
 //        cam.setRotation(new Quaternion().fromAngleAxis(FastMath.QUARTER_PI, Vector3f.UNIT_X));
 

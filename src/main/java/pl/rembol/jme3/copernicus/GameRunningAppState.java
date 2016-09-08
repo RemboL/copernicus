@@ -55,13 +55,15 @@ public class GameRunningAppState extends AbstractAppState {
         new SkyBox(gameState, "sky.jpg");
 
         Star sun = new Star(gameState, "sun.jpg", "Sun");
-        sun.setLocalScale(2f);
+        sun.setLocalScale(20000f);
+        sun.setPrecisePosition(new Vector3f(100000f, 0f, 0f));
+
         Planet earth = new Planet(gameState, "earth.jpg", "Earth");
-        earth.setLocalScale(.5f);
-        earth.setLocalTranslation(new Vector3f(10f, 0f, 0f));
+        earth.setLocalScale(6371f);
+        earth.setPrecisePosition(new Vector3f(0, 0f, 70000f));
 
         Ship bumblebee = new Ship(gameState, "bumblebee/bumblebee.blend");
-        bumblebee.setLocalTranslation(new Vector3f(8f, -2f, 0f));
+        bumblebee.setPrecisePosition(new Vector3f(8f, -2f, 0f));
 
         gameState.focusCamera.setFocusAt(bumblebee);
         gameState.shipControl.control(bumblebee);

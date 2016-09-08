@@ -8,14 +8,14 @@ import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.Node;
 import com.jme3.scene.shape.Sphere;
 import pl.rembol.jme3.copernicus.GameState;
+import pl.rembol.jme3.copernicus.objects.SpaceObject;
 
-public class Planet  extends Node {
+public class Planet  extends SpaceObject {
 
     public Planet(GameState gameState, String textureName, String name) {
-        super(name);
+        super(gameState, name);
         Geometry geometry = new Geometry("sphere", new Sphere(36, 36, 1));
         Material material = new Material(gameState.assetManager,
                 "Common/MatDefs/Light/Lighting.j3md");
@@ -27,7 +27,7 @@ public class Planet  extends Node {
         attachChild(geometry);
         geometry.setLocalRotation(new Quaternion().fromAngleAxis(-FastMath.HALF_PI, Vector3f.UNIT_X));
         geometry.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
-        geometry.addControl(new RotateControl(.2f, Vector3f.UNIT_Z));
+        geometry.addControl(new RotateControl(.002f, Vector3f.UNIT_Z));
 
         Geometry atmosphereGeometry = new Geometry("sphere", new Sphere(36, 36, 1.05f));
         Material atmosphereMaterial = new Material(gameState.assetManager,
@@ -44,7 +44,7 @@ public class Planet  extends Node {
         atmosphereGeometry.setQueueBucket(RenderQueue.Bucket.Transparent);
         atmosphereGeometry.setShadowMode(RenderQueue.ShadowMode.Receive);
 
-        atmosphereGeometry.addControl(new RotateControl(.19f, Vector3f.UNIT_Z));
+        atmosphereGeometry.addControl(new RotateControl(.0019f, Vector3f.UNIT_Z));
 
         gameState.rootNode.attachChild(this);
     }
