@@ -37,7 +37,7 @@ public class Main extends SimpleApplication {
 //		 0.7f));
 
 
-        cam.setFrustumPerspective(45f, (float)cam.getWidth() / cam.getHeight(), .001f, 2000000f);
+        cam.setFrustumPerspective(45f, (float)cam.getWidth() / cam.getHeight(), .001f, 200000f);
         cam.setLocation(new Vector3f(8f, .5f, -.5f));
 //        cam.setRotation(new Quaternion().fromAngleAxis(FastMath.QUARTER_PI, Vector3f.UNIT_X));
 

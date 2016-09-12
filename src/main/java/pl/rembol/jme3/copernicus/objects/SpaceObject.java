@@ -11,14 +11,19 @@ abstract public class SpaceObject extends Node {
     
     protected final GameState gameState;
 
+    protected final Node innerNode = new Node();
+
     private KeepTranslationRelativeToCameraFocusControl control;
 
     public SpaceObject(GameState gameState, String name) {
         super(name);
         this.gameState = gameState;
 
-        control = new KeepTranslationRelativeToCameraFocusControl(this);
+        control = createTranslationControl();
         addControl(control);
+
+        attachChild(innerNode);
+        gameState.rootNode.attachChild(this);
     }
 
     public void setPrecisePosition(Vector3f vector3f) {
@@ -38,5 +43,14 @@ abstract public class SpaceObject extends Node {
         precisePosition.addLocal(new Vector3d(delta));
     }
 
+    abstract protected KeepTranslationRelativeToCameraFocusControl createTranslationControl();
+
+    public void setInvisible() {
+        detachChild(innerNode);
+    }
+
+    public void setVisible() {
+        attachChild(innerNode);
+    }
 
 }

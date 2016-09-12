@@ -14,29 +14,28 @@ import com.jme3.scene.control.AbstractControl;
 import com.jme3.scene.shape.Sphere;
 import com.jme3.shadow.PointLightShadowRenderer;
 import pl.rembol.jme3.copernicus.GameState;
-import pl.rembol.jme3.copernicus.objects.SpaceObject;
 
-public class Star extends SpaceObject {
+public class Star extends AstralObject {
 
     private PointLight pointLight;
 
-    public Star(GameState gameState, String textureName, String name) {
-        super(gameState, name);
-        Geometry geometry = new Geometry("sphere", new Sphere(36, 36, 1));
+    public Star(GameState gameState, String textureName, String name, float radius) {
+        super(gameState, name, radius);
+        Geometry geometry = new Geometry("sphere", new Sphere(36, 36, radius));
         Material material = new Material(gameState.assetManager,
                 "Common/MatDefs/Light/Lighting.j3md");
         material.setTexture("DiffuseMap", gameState.assetManager.loadTexture(textureName));
         material.setBoolean("UseMaterialColors", true);
         material.setColor("Ambient", ColorRGBA.White.mult(3));
         geometry.setMaterial(material);
-        attachChild(geometry);
+        innerNode.attachChild(geometry);
         geometry.setShadowMode(RenderQueue.ShadowMode.Off);
         geometry.setLocalRotation(new Quaternion().fromAngleAxis(-FastMath.HALF_PI, Vector3f.UNIT_X));
 
 
         pointLight = new PointLight();
         pointLight.setColor(ColorRGBA.White);
-        pointLight.setRadius(1_000_000f);
+        pointLight.setRadius(gameState.camera.getFrustumFar() * 2);
         gameState.rootNode.addLight(pointLight);
         pointLight.setPosition(getWorldTranslation());
 
@@ -45,7 +44,6 @@ public class Star extends SpaceObject {
         pointLightShadowRenderer.setShadowIntensity(1f);
         gameState.simpleApplication.getViewPort().addProcessor(pointLightShadowRenderer);
 
-        gameState.rootNode.attachChild(this);
         addControl(new UpdateLightPositionControl());
 
     }

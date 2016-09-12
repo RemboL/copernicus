@@ -7,6 +7,7 @@ import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import com.jme3.scene.control.AbstractControl;
 import pl.rembol.jme3.copernicus.GameState;
+import pl.rembol.jme3.copernicus.objects.KeepTranslationRelativeToCameraFocusControl;
 import pl.rembol.jme3.copernicus.objects.SpaceObject;
 
 public class Ship extends SpaceObject {
@@ -21,7 +22,7 @@ public class Ship extends SpaceObject {
         attachChild(model);
         model.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         model.setLocalScale(.001f);
-        gameState.rootNode.attachChild(this);
+        innerNode.attachChild(model);
 
         addControl(new AlwaysMoveForwardControl());
     }
@@ -68,12 +69,32 @@ public class Ship extends SpaceObject {
     }
 
     public void accelerate(float value) {
-        speed += value;
+        if (speed >= 1) {
+            speed *= 1.1;
+        } else if (speed <= -1) {
+            speed /= 1.1;
+        } else if (speed < 0) {
+            speed = 0;
+        } else {
+            speed = 1;
+        }
     }
 
     public void decelerate(float value) {
-        speed -= value;
+        if (speed >= 1) {
+            speed /= 1.1;
+        } else if (speed <= -1) {
+            speed *= 1.1;
+        } else if (speed > 0) {
+            speed = 0;
+        } else {
+            speed = -1;
+        }
     }
 
+    @Override
+    protected KeepTranslationRelativeToCameraFocusControl createTranslationControl() {
+        return new ShipTranslationControl(this);
+    }
 
 }
