@@ -8,41 +8,48 @@ import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Sphere;
 import pl.rembol.jme3.copernicus.GameState;
 
 public class Planet extends AstralObject {
 
-    public Planet(GameState gameState, String textureName, String name, float radius, double mass) {
+    private Spatial planet;
+
+    private Spatial atmosphere;
+
+    public Planet(GameState gameState, String textureName, String name, float radius, double mass, float rotation) {
         super(gameState, name, radius, mass);
-        Geometry geometry = new Geometry("sphere", new Sphere(36, 36, radius));
+        Geometry planet = new Geometry("sphere", new Sphere(36, 36, radius));
         Material material = new Material(gameState.assetManager,
                 "Common/MatDefs/Light/Lighting.j3md");
         material.setTexture("DiffuseMap", gameState.assetManager.loadTexture(textureName));
         material.setBoolean("UseMaterialColors", true);
         material.setColor("Diffuse", ColorRGBA.White);
         material.setColor("Specular", ColorRGBA.White);
-        geometry.setMaterial(material);
-        innerNode.attachChild(geometry);
-        geometry.setLocalRotation(new Quaternion().fromAngleAxis(-FastMath.HALF_PI, Vector3f.UNIT_X));
-        geometry.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
-        geometry.addControl(new RotateControl(.002f, Vector3f.UNIT_Z));
+        planet.setMaterial(material);
+        innerNode.attachChild(planet);
+        planet.setLocalRotation(new Quaternion().fromAngleAxis(-FastMath.HALF_PI, Vector3f.UNIT_X));
+        planet.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
+        planet.addControl(new RotateControl(rotation, Vector3f.UNIT_Z));
+    }
 
-        Geometry atmosphereGeometry = new Geometry("sphere", new Sphere(36, 36, radius * 1.05f));
+    public void addAtmosphere(String texture, float height, float rotation) {
+        Geometry atmosphere = new Geometry("sphere", new Sphere(36, 36, Math.max(radius * 1.05f, radius + height)));
         Material atmosphereMaterial = new Material(gameState.assetManager,
                 "Common/MatDefs/Light/Lighting.j3md");
-        atmosphereMaterial.setTexture("DiffuseMap", gameState.assetManager.loadTexture("earth_atmosphere.png"));
+        atmosphereMaterial.setTexture("DiffuseMap", gameState.assetManager.loadTexture(texture));
         atmosphereMaterial.setBoolean("UseMaterialColors", true);
         atmosphereMaterial.setColor("Diffuse", ColorRGBA.White);
         atmosphereMaterial.setColor("Specular", ColorRGBA.White);
-        atmosphereGeometry.setMaterial(atmosphereMaterial);
-        innerNode.attachChild(atmosphereGeometry);
-        atmosphereGeometry.setLocalRotation(new Quaternion().fromAngleAxis(-FastMath.HALF_PI, Vector3f.UNIT_X));
+        atmosphere.setMaterial(atmosphereMaterial);
+        innerNode.attachChild(atmosphere);
+        atmosphere.setLocalRotation(new Quaternion().fromAngleAxis(-FastMath.HALF_PI, Vector3f.UNIT_X));
 
         atmosphereMaterial.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-        atmosphereGeometry.setQueueBucket(RenderQueue.Bucket.Transparent);
-        atmosphereGeometry.setShadowMode(RenderQueue.ShadowMode.Receive);
+        atmosphere.setQueueBucket(RenderQueue.Bucket.Transparent);
+        atmosphere.setShadowMode(RenderQueue.ShadowMode.Receive);
 
-        atmosphereGeometry.addControl(new RotateControl(.0019f, Vector3f.UNIT_Z));
+        atmosphere.addControl(new RotateControl(rotation, Vector3f.UNIT_Z));
     }
 }

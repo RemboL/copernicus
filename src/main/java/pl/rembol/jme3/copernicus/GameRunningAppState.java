@@ -9,10 +9,8 @@ import com.jme3.light.AmbientLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.plugins.blender.math.Vector3d;
 import com.jme3.system.AppSettings;
+import pl.rembol.jme3.copernicus.config.ConfigLoader;
 import pl.rembol.jme3.copernicus.ship.Ship;
-import pl.rembol.jme3.copernicus.skybox.SkyBox;
-import pl.rembol.jme3.copernicus.stellarobjects.Planet;
-import pl.rembol.jme3.copernicus.stellarobjects.Star;
 
 public class GameRunningAppState extends AbstractAppState {
 
@@ -52,21 +50,17 @@ public class GameRunningAppState extends AbstractAppState {
         ambient.setColor(ColorRGBA.White);
         gameState.rootNode.addLight(ambient);
 
-        new SkyBox(gameState, "sky.jpg");
-
-        Star sun = new Star(gameState, "sun.jpg", "Sun", 695_700f, 1.98855 * Math.pow(10, 30));
-        sun.setPrecisePosition(new Vector3d(0, 0, 0));
-
-        Planet earth = new Planet(gameState, "earth.jpg", "Earth", 6_371f, 5.97237 * Math.pow(10, 24));
-        earth.setPrecisePosition(new Vector3d(0, 0, 149_600_000d));
+        new ConfigLoader(gameState).loadFromFile("solar_system.yml");
 
         Ship bumblebee = new Ship(gameState, "bumblebee/bumblebee.blend");
         gameState.focusCamera.setFocusAt(bumblebee);
         gameState.shipControl.control(bumblebee);
-        bumblebee.setPrecisePosition(new Vector3d(8f, -2d, 149_593_000d));
+        bumblebee.setPrecisePosition(new Vector3d(8f, -2d, 149_565_000d));
+        bumblebee.accelerate(new Vector3d(33.14f, 0, 0));
 
         Ship bumblebee2 = new Ship(gameState, "bumblebee/bumblebee.blend");
-        bumblebee2.setPrecisePosition(new Vector3d(8f, -1.998d, 149_593_000d));
+        bumblebee2.setPrecisePosition(new Vector3d(8f, -1.998d, 149_565_000d));
+        bumblebee2.accelerate(new Vector3d(33.14f, 0, 0));
 
     }
 

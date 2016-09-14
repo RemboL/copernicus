@@ -9,6 +9,11 @@ import java.util.Map;
 
 public class GravityAppState extends AbstractAppState {
 
+    /**
+     * property used to speed up gravitational changes - to be able to observe orbital movement and stuff
+     */
+    private static final double SCALE = 1;
+
     private Map<SpaceObject, Vector3d> currentPositions = new HashMap<>();
 
     private Map<SpaceObject, Vector3d> nextPositions = new HashMap<>();
@@ -22,14 +27,14 @@ public class GravityAppState extends AbstractAppState {
     @Override
     public void update(float tpf) {
 
-        currentPositions.keySet().forEach(this::updateVelocity);
-        currentPositions.keySet().forEach(spaceObject -> spaceObject.preciseMove(spaceObject.velocity.mult(tpf /* times scale */)));
+        currentPositions.keySet().forEach(spaceObject -> updateVelocity(spaceObject, tpf));
+        currentPositions.keySet().forEach(spaceObject -> spaceObject.preciseMove(spaceObject.velocity.mult(tpf * SCALE)));
 
         currentPositions.putAll(nextPositions);
     }
 
-    private void updateVelocity(SpaceObject spaceObject) {
-        spaceObject.velocity.addLocal(gameState.stellarSystem.getGravitationalAccelerationAtPoint(getPosition(spaceObject)));
+    private void updateVelocity(SpaceObject spaceObject, float tpf) {
+        spaceObject.accelerate(gameState.stellarSystem.getGravitationalAccelerationAtPoint(getPosition(spaceObject)).mult(tpf * SCALE));
     }
 
     public void setPosition(SpaceObject spaceObject, Vector3d position) {

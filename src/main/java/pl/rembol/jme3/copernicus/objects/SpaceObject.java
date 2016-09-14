@@ -54,4 +54,8 @@ abstract public class SpaceObject extends Node {
         attachChild(innerNode);
     }
 
+    public void accelerate(Vector3d acceleration) {
+        velocity.addLocal(acceleration);
+    }
+
 }

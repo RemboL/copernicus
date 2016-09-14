@@ -1,0 +1,31 @@
+skybox: sky.jpg
+stars:
+  - name: Sun
+    texture: sun.jpg
+    radius: 695_700f
+    mass: 1.98855E30
+    rotation: 0.000002972
+planets:
+  - name: Earth
+    texture: earth.jpg
+    radius: 6_371f
+    mass: 5.97237E24
+    position:
+      z: 149_600_000d
+    atmosphere:
+      texture: earth_atmosphere.png
+    velocity:
+      x: 29.78f
+    rotation: 0.000072722
+  - name: Luna
+    texture: luna.jpg
+    radius: 1_738f
+    mass: 7.342E22
+    position:
+      x: 384_000d
+      z: 149_600_000d
+    velocity:
+      x: 29.78f
+      z: 1.022f
+    rotation: 0.000002597
+
