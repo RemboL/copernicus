@@ -6,6 +6,7 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import com.jme3.scene.control.AbstractControl;
+import com.jme3.scene.plugins.blender.math.Vector3d;
 import pl.rembol.jme3.copernicus.GameState;
 import pl.rembol.jme3.copernicus.objects.KeepTranslationRelativeToCameraFocusControl;
 import pl.rembol.jme3.copernicus.objects.SpaceObject;
@@ -41,7 +42,7 @@ public class Ship extends SpaceObject {
     }
 
     void moveForward(float value) {
-        preciseMove(getWorldRotation().mult(Vector3f.UNIT_Z).mult(value * speed));
+        preciseMove(new Vector3d(getWorldRotation().mult(Vector3f.UNIT_Z).mult(value * speed)));
     }
 
     public void yawLeft(float value) {

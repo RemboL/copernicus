@@ -8,15 +8,23 @@ public class AstralObject extends SpaceObject {
 
     protected float radius;
 
-    public AstralObject(GameState gameState, String name, float radius) {
+    protected double mass;
+
+    public AstralObject(GameState gameState, String name, float radius, double mass) {
         super(gameState, name);
         this.radius = radius;
+        this.mass = mass;
+
+        gameState.stellarSystem.register(this);
     }
 
     public float getRadius() {
         return radius;
     }
 
+    public double getMass() {
+        return mass;
+    }
 
     @Override
     protected KeepTranslationRelativeToCameraFocusControl createTranslationControl() {

@@ -13,8 +13,8 @@ import pl.rembol.jme3.copernicus.GameState;
 
 public class Planet extends AstralObject {
 
-    public Planet(GameState gameState, String textureName, String name, float radius) {
-        super(gameState, name, radius);
+    public Planet(GameState gameState, String textureName, String name, float radius, double mass) {
+        super(gameState, name, radius, mass);
         Geometry geometry = new Geometry("sphere", new Sphere(36, 36, radius));
         Material material = new Material(gameState.assetManager,
                 "Common/MatDefs/Light/Lighting.j3md");

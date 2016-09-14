@@ -19,8 +19,8 @@ public class Star extends AstralObject {
 
     private PointLight pointLight;
 
-    public Star(GameState gameState, String textureName, String name, float radius) {
-        super(gameState, name, radius);
+    public Star(GameState gameState, String textureName, String name, float radius, double mass) {
+        super(gameState, name, radius, mass);
         Geometry geometry = new Geometry("sphere", new Sphere(36, 36, radius));
         Material material = new Material(gameState.assetManager,
                 "Common/MatDefs/Light/Lighting.j3md");

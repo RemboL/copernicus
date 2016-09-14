@@ -7,11 +7,11 @@ import pl.rembol.jme3.copernicus.GameState;
 
 abstract public class SpaceObject extends Node {
 
-    private Vector3d precisePosition = new Vector3d(0, 0, 0);
-    
     protected final GameState gameState;
 
     protected final Node innerNode = new Node();
+
+    Vector3d velocity = new Vector3d(0, 0, 0);
 
     private KeepTranslationRelativeToCameraFocusControl control;
 
@@ -26,21 +26,22 @@ abstract public class SpaceObject extends Node {
         gameState.rootNode.attachChild(this);
     }
 
-    public void setPrecisePosition(Vector3f vector3f) {
-        precisePosition = new Vector3d(vector3f);
+    public void setPrecisePosition(Vector3d vector3d) {
+        gameState.gravityAppState.setPosition(this, vector3d);
         control.controlUpdate(0f);
     }
 
     public Vector3f getWorldPosition() {
-        return getPrecisePosition().subtract(gameState.focusCamera.getCameraPosition()).toVector3f();
+        Vector3d cameraPosition = gameState.focusCamera.getCameraPosition();
+        return getPrecisePosition().subtract(cameraPosition).toVector3f();
     }
 
     public Vector3d getPrecisePosition() {
-        return precisePosition;
+        return gameState.gravityAppState.getPosition(this);
     }
 
-    public void preciseMove(Vector3f delta) {
-        precisePosition.addLocal(new Vector3d(delta));
+    public void preciseMove(Vector3d delta) {
+        gameState.gravityAppState.move(this, delta);
     }
 
     abstract protected KeepTranslationRelativeToCameraFocusControl createTranslationControl();
