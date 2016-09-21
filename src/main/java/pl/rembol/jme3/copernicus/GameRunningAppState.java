@@ -13,6 +13,7 @@ import com.jme3.scene.control.AbstractControl;
 import com.jme3.scene.plugins.blender.math.Vector3d;
 import com.jme3.system.AppSettings;
 import pl.rembol.jme3.copernicus.config.ConfigLoader;
+import pl.rembol.jme3.copernicus.missile.Missile;
 import pl.rembol.jme3.copernicus.ship.Ship;
 
 public class GameRunningAppState extends AbstractAppState {
@@ -62,16 +63,19 @@ public class GameRunningAppState extends AbstractAppState {
         bumblebee.accelerate(new Vector3d(33.14f, 0, 0));
 
         Ship bumblebee2 = new Ship(gameState, "bumblebee/bumblebee.blend");
-        bumblebee2.setPrecisePosition(new Vector3d(8f, -1.998d, 149_565_000d));
+        bumblebee2.setPrecisePosition(new Vector3d(8f, -2d, 149_565_000.02d));
         bumblebee2.accelerate(new Vector3d(33.14f, 0, 0));
         bumblebee2.addControl(new AbstractControl() {
             float ttl = 5f;
 
             @Override
             protected void controlUpdate(float tpf) {
+                bumblebee2.yawRight(tpf / 10);
                 ttl -= tpf;
                 if (ttl < 0) {
-                    bumblebee2.destroy();
+                    new Missile(gameState, bumblebee2);
+//                    bumblebee2.destroy();
+                    ttl = 1f;
                 }
             }
 

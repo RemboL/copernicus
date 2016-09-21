@@ -104,4 +104,9 @@ public class ExplosionEffect extends SpaceObject {
     protected KeepTranslationRelativeToCameraFocusControl createTranslationControl() {
         return new ShipTranslationControl(this);
     }
+
+    @Override
+    protected boolean isCollidable() {
+        return false;
+    }
 }

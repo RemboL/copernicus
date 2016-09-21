@@ -72,4 +72,8 @@ abstract public class SpaceObject extends Node {
     public boolean isDestroyed() {
         return isDestroyed;
     }
+
+    protected boolean isCollidable() {
+        return true;
+    }
 }

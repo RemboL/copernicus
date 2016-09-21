@@ -3,12 +3,13 @@ package pl.rembol.jme3.copernicus;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
+import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseAxisTrigger;
 import pl.rembol.jme3.copernicus.ship.Ship;
 
-public class ShipControl implements AnalogListener {
+public class ShipControl implements AnalogListener, ActionListener {
 
     private static final String YAW_LEFT = "shipControl_yawLeft";
 
@@ -25,6 +26,8 @@ public class ShipControl implements AnalogListener {
     private static final String ACCELERATE = "shipControl_accelerate";
 
     private static final String DECELERATE = "shipControl_decelerate";
+
+    private static final String FIRE_MISSILE = "shipControl_fireMissile";
 
     private Ship ship;
 
@@ -85,6 +88,12 @@ public class ShipControl implements AnalogListener {
         }
     }
 
+    private void fireMissile() {
+        if (ship != null) {
+            ship.fireMissile();
+        }
+    }
+
     @Override
     public void onAnalog(String name, float value, float tpf) {
         switch (name) {
@@ -115,6 +124,17 @@ public class ShipControl implements AnalogListener {
         }
     }
 
+    @Override
+    public void onAction(String name, boolean isPressed, float tpf) {
+        if (isPressed) {
+            switch (name) {
+                case FIRE_MISSILE:
+                    fireMissile();
+                    break;
+            }
+        }
+    }
+
     private void registerInput(InputManager inputManager) {
         registerKey(inputManager, PITCH_UP, KeyInput.KEY_W);
         registerKey(inputManager, PITCH_DOWN, KeyInput.KEY_S);
@@ -122,6 +142,7 @@ public class ShipControl implements AnalogListener {
         registerKey(inputManager, YAW_RIGHT, KeyInput.KEY_D);
         registerKey(inputManager, ROLL_LEFT, KeyInput.KEY_Q);
         registerKey(inputManager, ROLL_RIGHT, KeyInput.KEY_E);
+        registerKey(inputManager, FIRE_MISSILE, KeyInput.KEY_SPACE);
 
         inputManager.addMapping(ACCELERATE, new MouseAxisTrigger(MouseInput.AXIS_WHEEL, false));
         inputManager.addMapping(DECELERATE, new MouseAxisTrigger(MouseInput.AXIS_WHEEL, true));
@@ -134,5 +155,6 @@ public class ShipControl implements AnalogListener {
         inputManager.addMapping(name, new KeyTrigger(key));
         inputManager.addListener(this, name);
     }
+
 
 }

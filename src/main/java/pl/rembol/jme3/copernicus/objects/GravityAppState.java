@@ -5,6 +5,7 @@ import com.jme3.scene.plugins.blender.math.Vector3d;
 import pl.rembol.jme3.copernicus.GameState;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ public class GravityAppState extends AbstractAppState {
     @Override
     public void update(float tpf) {
 
-        currentPositions.keySet().stream().filter(this::collidesWithAstralObject).collect(Collectors.toList()).stream().forEach(SpaceObject::destroy);
+        currentPositions.keySet().stream().filter(SpaceObject::isCollidable).filter(this::collidesWithAstralObject).collect(Collectors.toList()).stream().forEach(SpaceObject::destroy);
         currentPositions.keySet().stream().filter(SpaceObject::isDestroyed).collect(Collectors.toList()).stream().forEach(this::remove);
 
         currentPositions.keySet().forEach(spaceObject -> updateVelocity(spaceObject, tpf));
@@ -56,10 +57,18 @@ public class GravityAppState extends AbstractAppState {
     }
 
     public Vector3d getPosition(SpaceObject spaceObject) {
-        return currentPositions.get(spaceObject);
+        if (currentPositions.containsKey(spaceObject)) {
+            return currentPositions.get(spaceObject).clone();
+        } else {
+            return null;
+        }
     }
 
     public void move(SpaceObject spaceObject, Vector3d delta) {
         nextPositions.get(spaceObject).addLocal(delta);
+    }
+
+    public List<SpaceObject> getObjectsInProximity(Vector3d position, float proximityDistance) {
+        return currentPositions.keySet().stream().filter(SpaceObject::isCollidable).filter(spaceObject -> position.distance(spaceObject.getPrecisePosition()) <= proximityDistance).collect(Collectors.toList());
     }
 }

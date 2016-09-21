@@ -9,6 +9,7 @@ import com.jme3.scene.control.AbstractControl;
 import com.jme3.scene.plugins.blender.math.Vector3d;
 import pl.rembol.jme3.copernicus.GameState;
 import pl.rembol.jme3.copernicus.effects.ExplosionEffect;
+import pl.rembol.jme3.copernicus.missile.Missile;
 import pl.rembol.jme3.copernicus.objects.KeepTranslationRelativeToCameraFocusControl;
 import pl.rembol.jme3.copernicus.objects.SpaceObject;
 
@@ -103,5 +104,9 @@ public class Ship extends SpaceObject {
     public void destroy() {
         new ExplosionEffect(gameState, this, .01f);
         super.destroy();
+    }
+
+    public Missile fireMissile() {
+        return new Missile(gameState, this);
     }
 }
