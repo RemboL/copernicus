@@ -37,7 +37,11 @@ public class FocusCamera extends CameraNode {
             return new Vector3d(getCamera().getWorldCoordinates(Vector2f.UNIT_XY, 0));
         }
 
-        return focus.getPrecisePosition();
+        Vector3d focusPosition = focus.getPrecisePosition();
+        if (focusPosition == null) {
+            return new Vector3d(getCamera().getWorldCoordinates(Vector2f.UNIT_XY, 0));
+        }
+        return focusPosition;
     }
 
 }

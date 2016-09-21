@@ -8,6 +8,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.control.AbstractControl;
 import com.jme3.scene.plugins.blender.math.Vector3d;
 import pl.rembol.jme3.copernicus.GameState;
+import pl.rembol.jme3.copernicus.effects.ExplosionEffect;
 import pl.rembol.jme3.copernicus.objects.KeepTranslationRelativeToCameraFocusControl;
 import pl.rembol.jme3.copernicus.objects.SpaceObject;
 
@@ -70,26 +71,26 @@ public class Ship extends SpaceObject {
     }
 
     public void accelerate(float value) {
-        if (speed >= 1) {
+        if (speed >= .001f) {
             speed *= 1.1;
-        } else if (speed <= -1) {
+        } else if (speed <= -.001f) {
             speed /= 1.1;
         } else if (speed < 0) {
             speed = 0;
         } else {
-            speed = 1;
+            speed = .001f;
         }
     }
 
     public void decelerate(float value) {
-        if (speed >= 1) {
+        if (speed >= .001f) {
             speed /= 1.1;
-        } else if (speed <= -1) {
+        } else if (speed <= -.001f) {
             speed *= 1.1;
         } else if (speed > 0) {
             speed = 0;
         } else {
-            speed = -1;
+            speed = -.001f;
         }
     }
 
@@ -98,4 +99,9 @@ public class Ship extends SpaceObject {
         return new ShipTranslationControl(this);
     }
 
+    @Override
+    public void destroy() {
+        new ExplosionEffect(gameState, this, .01f);
+        super.destroy();
+    }
 }

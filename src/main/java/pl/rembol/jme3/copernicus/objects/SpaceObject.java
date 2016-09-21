@@ -13,6 +13,8 @@ abstract public class SpaceObject extends Node {
 
     Vector3d velocity = new Vector3d(0, 0, 0);
 
+    protected boolean isDestroyed = false;
+
     private KeepTranslationRelativeToCameraFocusControl control;
 
     public SpaceObject(GameState gameState, String name) {
@@ -58,4 +60,16 @@ abstract public class SpaceObject extends Node {
         velocity.addLocal(acceleration);
     }
 
+    public Vector3d getVelocity() {
+        return velocity;
+    }
+
+    public void destroy() {
+        isDestroyed = true;
+        gameState.rootNode.detachChild(this);
+    }
+
+    public boolean isDestroyed() {
+        return isDestroyed;
+    }
 }

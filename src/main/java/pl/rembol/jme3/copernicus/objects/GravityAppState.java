@@ -6,6 +6,7 @@ import pl.rembol.jme3.copernicus.GameState;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class GravityAppState extends AbstractAppState {
 
@@ -27,10 +28,22 @@ public class GravityAppState extends AbstractAppState {
     @Override
     public void update(float tpf) {
 
+        currentPositions.keySet().stream().filter(this::collidesWithAstralObject).collect(Collectors.toList()).stream().forEach(SpaceObject::destroy);
+        currentPositions.keySet().stream().filter(SpaceObject::isDestroyed).collect(Collectors.toList()).stream().forEach(this::remove);
+
         currentPositions.keySet().forEach(spaceObject -> updateVelocity(spaceObject, tpf));
         currentPositions.keySet().forEach(spaceObject -> spaceObject.preciseMove(spaceObject.velocity.mult(tpf * SCALE)));
 
         currentPositions.putAll(nextPositions);
+    }
+
+    private boolean collidesWithAstralObject(SpaceObject spaceObject) {
+        return gameState.stellarSystem.collidesWithAstralObject(spaceObject);
+    }
+
+    private void remove(SpaceObject spaceObject) {
+        currentPositions.remove(spaceObject);
+        nextPositions.remove(spaceObject);
     }
 
     private void updateVelocity(SpaceObject spaceObject, float tpf) {

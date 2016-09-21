@@ -4,9 +4,9 @@ import com.jme3.math.Vector3f;
 import pl.rembol.jme3.copernicus.objects.KeepTranslationRelativeToCameraFocusControl;
 import pl.rembol.jme3.copernicus.objects.SpaceObject;
 
-class ShipTranslationControl extends KeepTranslationRelativeToCameraFocusControl<SpaceObject> {
+public class ShipTranslationControl extends KeepTranslationRelativeToCameraFocusControl<SpaceObject> {
 
-    ShipTranslationControl(SpaceObject spaceObject) {
+    public ShipTranslationControl(SpaceObject spaceObject) {
         super(spaceObject);
     }
 

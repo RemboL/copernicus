@@ -1,6 +1,7 @@
 package pl.rembol.jme3.copernicus.stellarobjects;
 
 import com.jme3.scene.plugins.blender.math.Vector3d;
+import pl.rembol.jme3.copernicus.objects.SpaceObject;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -39,4 +40,7 @@ public class StellarSystem {
         return acceleration;
     }
 
+    public boolean collidesWithAstralObject(SpaceObject spaceObject) {
+        return astralObjects.stream().anyMatch(astralObject -> astralObject.collides(spaceObject));
+    }
 }

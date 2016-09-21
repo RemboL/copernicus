@@ -7,6 +7,9 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.light.AmbientLight;
 import com.jme3.math.ColorRGBA;
+import com.jme3.renderer.RenderManager;
+import com.jme3.renderer.ViewPort;
+import com.jme3.scene.control.AbstractControl;
 import com.jme3.scene.plugins.blender.math.Vector3d;
 import com.jme3.system.AppSettings;
 import pl.rembol.jme3.copernicus.config.ConfigLoader;
@@ -61,6 +64,22 @@ public class GameRunningAppState extends AbstractAppState {
         Ship bumblebee2 = new Ship(gameState, "bumblebee/bumblebee.blend");
         bumblebee2.setPrecisePosition(new Vector3d(8f, -1.998d, 149_565_000d));
         bumblebee2.accelerate(new Vector3d(33.14f, 0, 0));
+        bumblebee2.addControl(new AbstractControl() {
+            float ttl = 5f;
+
+            @Override
+            protected void controlUpdate(float tpf) {
+                ttl -= tpf;
+                if (ttl < 0) {
+                    bumblebee2.destroy();
+                }
+            }
+
+            @Override
+            protected void controlRender(RenderManager rm, ViewPort vp) {
+
+            }
+        });
 
     }
 

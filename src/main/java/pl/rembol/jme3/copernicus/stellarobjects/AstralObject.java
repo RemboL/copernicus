@@ -30,4 +30,11 @@ public class AstralObject extends SpaceObject {
     protected KeepTranslationRelativeToCameraFocusControl createTranslationControl() {
         return new AstralObjectTranslactionControl(this);
     }
+
+    public boolean collides(SpaceObject spaceObject) {
+        if (spaceObject == this) {
+            return false;
+        }
+        return getPrecisePosition().distance(spaceObject.getPrecisePosition()) < getRadius();
+    }
 }
