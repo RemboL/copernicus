@@ -4,6 +4,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.plugins.blender.math.Vector3d;
 import pl.rembol.jme3.copernicus.GameState;
+import pl.rembol.jme3.copernicus.stellarobjects.AstralObject;
 
 abstract public class SpaceObject extends Node {
 
@@ -75,5 +76,15 @@ abstract public class SpaceObject extends Node {
 
     protected boolean isCollidable() {
         return true;
+    }
+
+    protected AstralObject getGravityWellCenter() {
+        GravityWellCenterControl control = getControl(GravityWellCenterControl.class);
+        if (control == null) {
+            control = new GravityWellCenterControl(gameState, this);
+            addControl(control);
+        }
+
+        return control.getGravityWellCenter();
     }
 }

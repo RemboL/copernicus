@@ -9,6 +9,7 @@ import com.jme3.scene.Node;
 import com.jme3.system.AppSettings;
 import pl.rembol.jme3.copernicus.camera.FocusCamera;
 import pl.rembol.jme3.copernicus.objects.GravityAppState;
+import pl.rembol.jme3.copernicus.selection.SelectionManager;
 import pl.rembol.jme3.copernicus.stellarobjects.StellarSystem;
 import pl.rembol.jme3.rts.threads.ThreadManager;
 
@@ -31,6 +32,7 @@ public class GameState {
     public final StellarSystem stellarSystem;
 
     public final GravityAppState gravityAppState;
+    public final SelectionManager selectionManager;
 
     public GameState(SimpleApplication simpleApplication, AppSettings settings, BulletAppState bulletAppState) {
         this.simpleApplication = simpleApplication;
@@ -49,6 +51,7 @@ public class GameState {
 
         gravityAppState = new GravityAppState(this);
         simpleApplication.getStateManager().attach(gravityAppState);
+        selectionManager = new SelectionManager(this);
     }
 
 }

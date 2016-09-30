@@ -28,4 +28,12 @@ planets:
       x: 29.78f
       z: 1.022f
     rotation: 0.000002597
-
+  - name: Mars
+    texture: mars.jpg
+    radius: 3_402f
+    mass: 6.4185E23
+    position:
+      x: 227_936_637d
+    velocity:
+      z: -24.13f
+    rotation: 0.000071238

@@ -23,9 +23,9 @@ public class ShipControl implements AnalogListener, ActionListener {
 
     private static final String ROLL_RIGHT = "shipControl_rollRight";
 
-    private static final String ACCELERATE = "shipControl_accelerate";
+    private static final String THROTTLE_UP = "shipControl_throttleUp";
 
-    private static final String DECELERATE = "shipControl_decelerate";
+    private static final String THROTTLE_DOWN = "shipControl_throttleDown";
 
     private static final String FIRE_MISSILE = "shipControl_fireMissile";
 
@@ -76,15 +76,15 @@ public class ShipControl implements AnalogListener, ActionListener {
         }
     }
 
-    private void accelerate(float value) {
+    private void throttleUp(float value) {
         if (ship != null) {
-            ship.accelerate(value);
+            ship.throttleUp(value);
         }
     }
 
-    private void decelerate(float value) {
+    private void throttleDown(float value) {
         if (ship != null) {
-            ship.decelerate(value);
+            ship.throttleDown(value);
         }
     }
 
@@ -115,11 +115,11 @@ public class ShipControl implements AnalogListener, ActionListener {
             case ROLL_RIGHT:
                 rollRight(value);
                 break;
-            case ACCELERATE:
-                accelerate(value);
+            case THROTTLE_UP:
+                throttleUp(value);
                 break;
-            case DECELERATE:
-                decelerate(value);
+            case THROTTLE_DOWN:
+                throttleDown(value);
                 break;
         }
     }
@@ -144,10 +144,10 @@ public class ShipControl implements AnalogListener, ActionListener {
         registerKey(inputManager, ROLL_RIGHT, KeyInput.KEY_E);
         registerKey(inputManager, FIRE_MISSILE, KeyInput.KEY_SPACE);
 
-        inputManager.addMapping(ACCELERATE, new MouseAxisTrigger(MouseInput.AXIS_WHEEL, false));
-        inputManager.addMapping(DECELERATE, new MouseAxisTrigger(MouseInput.AXIS_WHEEL, true));
-        inputManager.addListener(this, ACCELERATE);
-        inputManager.addListener(this, DECELERATE);
+        inputManager.addMapping(THROTTLE_UP, new MouseAxisTrigger(MouseInput.AXIS_WHEEL, false));
+        inputManager.addMapping(THROTTLE_DOWN, new MouseAxisTrigger(MouseInput.AXIS_WHEEL, true));
+        inputManager.addListener(this, THROTTLE_UP);
+        inputManager.addListener(this, THROTTLE_DOWN);
 
     }
 

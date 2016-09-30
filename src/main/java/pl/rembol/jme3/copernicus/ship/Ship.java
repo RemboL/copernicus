@@ -15,7 +15,7 @@ import pl.rembol.jme3.copernicus.objects.SpaceObject;
 
 public class Ship extends SpaceObject {
 
-    private float speed = 0f;
+    private float acceleration = 0f;
 
     public Ship(GameState gameState, String modelName) {
         super(gameState, "ship");
@@ -34,7 +34,7 @@ public class Ship extends SpaceObject {
 
         @Override
         protected void controlUpdate(float tpf) {
-            moveForward(tpf);
+            throttle(tpf);
         }
 
         @Override
@@ -43,8 +43,8 @@ public class Ship extends SpaceObject {
         }
     }
 
-    void moveForward(float value) {
-        preciseMove(new Vector3d(getWorldRotation().mult(Vector3f.UNIT_Z).mult(value * speed)));
+    void throttle(float value) {
+        accelerate(new Vector3d(getWorldRotation().mult(Vector3f.UNIT_Z).mult(value * acceleration)));
     }
 
     public void yawLeft(float value) {
@@ -71,27 +71,27 @@ public class Ship extends SpaceObject {
         rotate(0, 0, value);
     }
 
-    public void accelerate(float value) {
-        if (speed >= .001f) {
-            speed *= 1.1;
-        } else if (speed <= -.001f) {
-            speed /= 1.1;
-        } else if (speed < 0) {
-            speed = 0;
+    public void throttleUp(float value) {
+        if (acceleration >= .001f) {
+            acceleration *= 1.1;
+        } else if (acceleration <= -.001f) {
+            acceleration /= 1.1;
+        } else if (acceleration < 0) {
+            acceleration = 0;
         } else {
-            speed = .001f;
+            acceleration = .001f;
         }
     }
 
-    public void decelerate(float value) {
-        if (speed >= .001f) {
-            speed /= 1.1;
-        } else if (speed <= -.001f) {
-            speed *= 1.1;
-        } else if (speed > 0) {
-            speed = 0;
+    public void throttleDown(float value) {
+        if (acceleration >= .001f) {
+            acceleration /= 1.1;
+        } else if (acceleration <= -.001f) {
+            acceleration *= 1.1;
+        } else if (acceleration > 0) {
+            acceleration = 0;
         } else {
-            speed = -.001f;
+            acceleration = -.001f;
         }
     }
 
@@ -102,8 +102,12 @@ public class Ship extends SpaceObject {
 
     @Override
     public void destroy() {
-        new ExplosionEffect(gameState, this, .01f);
+        ExplosionEffect explosionEffect = new ExplosionEffect(gameState, this, .01f);
+        if (gameState.focusCamera.isFocusedOn(this)) {
+            gameState.focusCamera.setFocusAt(explosionEffect);
+        }
         super.destroy();
+
     }
 
     public Missile fireMissile() {

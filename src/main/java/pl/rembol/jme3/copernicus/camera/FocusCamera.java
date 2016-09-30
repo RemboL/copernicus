@@ -44,4 +44,21 @@ public class FocusCamera extends CameraNode {
         return focusPosition;
     }
 
+    public Vector3d getVelocity() {
+        if (focus == null) {
+            return Vector3d.ZERO;
+        }
+
+        Vector3d velocity = focus.getVelocity();
+        if (velocity == null) {
+            return Vector3d.ZERO;
+        }
+        return velocity;
+
+    }
+
+    public boolean isFocusedOn(SpaceObject spaceObject) {
+        return focus == spaceObject;
+    }
+
 }

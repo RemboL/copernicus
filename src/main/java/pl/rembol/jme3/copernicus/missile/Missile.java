@@ -41,7 +41,7 @@ public class Missile extends SpaceObject {
         setPrecisePosition(origin.getPrecisePosition());
         accelerate(origin.getVelocity());
         setLocalRotation(origin.getWorldRotation());
-        accelerate(new Vector3d(getWorldRotation().mult(Vector3f.UNIT_Z.mult(.01f))));
+        accelerate(new Vector3d(getWorldRotation().mult(Vector3f.UNIT_Z.mult(.1f))));
 
         addControl(new MissileControl());
     }

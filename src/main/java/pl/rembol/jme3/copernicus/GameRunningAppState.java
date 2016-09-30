@@ -59,7 +59,8 @@ public class GameRunningAppState extends AbstractAppState {
         Ship bumblebee = new Ship(gameState, "bumblebee/bumblebee.blend");
         gameState.focusCamera.setFocusAt(bumblebee);
         gameState.shipControl.control(bumblebee);
-        bumblebee.setPrecisePosition(new Vector3d(8f, -2d, 149_565_000d));
+        bumblebee.setPrecisePosition(new Vector3d(227_936_637d, 0d, 35_000d));
+//        bumblebee.setPrecisePosition(new Vector3d(8f, -2d, 149_565_000d));
         bumblebee.accelerate(new Vector3d(33.14f, 0, 0));
 
         Ship bumblebee2 = new Ship(gameState, "bumblebee/bumblebee.blend");
@@ -74,7 +75,6 @@ public class GameRunningAppState extends AbstractAppState {
                 ttl -= tpf;
                 if (ttl < 0) {
                     new Missile(gameState, bumblebee2);
-//                    bumblebee2.destroy();
                     ttl = 1f;
                 }
             }
@@ -84,6 +84,8 @@ public class GameRunningAppState extends AbstractAppState {
 
             }
         });
+
+        gameState.selectionManager.select(gameState.stellarSystem.getObjectForName("Mars"));
 
     }
 
