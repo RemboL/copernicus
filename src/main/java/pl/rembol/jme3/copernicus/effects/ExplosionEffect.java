@@ -21,7 +21,6 @@ import pl.rembol.jme3.copernicus.ship.ShipTranslationControl;
 
 public class ExplosionEffect extends SpaceObject {
 
-
     private final PointLight pointLight;
     private final PointLightShadowRenderer pointLightShadowRenderer;
     private final Material explosionMaterial;

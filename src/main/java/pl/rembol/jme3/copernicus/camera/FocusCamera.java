@@ -21,11 +21,11 @@ public class FocusCamera extends CameraNode {
     public void setFocusAt(SpaceObject spaceObject) {
         this.focus = spaceObject;
         spaceObject.attachChild(this);
-        this.setLocalTranslation(new Vector3f(0, .003f, -.01f));
+        this.setLocalTranslation(new Vector3f(0, .006f, -.01f));
 
         Node cameraFocusNode = new Node("Camera focus node");
         spaceObject.attachChild(cameraFocusNode);
-        cameraFocusNode.setLocalTranslation(new Vector3f(0, 0, 1f));
+        cameraFocusNode.setLocalTranslation(new Vector3f(0, 0, .01f));
 
         lookAt(cameraFocusNode.getWorldTranslation(), Vector3f.UNIT_Y);
 

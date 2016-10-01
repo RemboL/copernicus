@@ -1,5 +1,6 @@
 package pl.rembol.jme3.copernicus.ship;
 
+import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
@@ -9,6 +10,7 @@ import com.jme3.scene.control.AbstractControl;
 import com.jme3.scene.plugins.blender.math.Vector3d;
 import pl.rembol.jme3.copernicus.GameState;
 import pl.rembol.jme3.copernicus.effects.ExplosionEffect;
+import pl.rembol.jme3.copernicus.engine_fire.EngineFire;
 import pl.rembol.jme3.copernicus.missile.Missile;
 import pl.rembol.jme3.copernicus.objects.KeepTranslationRelativeToCameraFocusControl;
 import pl.rembol.jme3.copernicus.objects.SpaceObject;
@@ -28,6 +30,15 @@ public class Ship extends SpaceObject {
         innerNode.attachChild(model);
 
         addControl(new AlwaysMoveForwardControl());
+
+        EngineFire engineFire = new EngineFire(gameState, .00035f, this);
+        engineFire.setLocalTranslation(new Vector3f(0f, 0.0001f, -.00065f));
+        engineFire.rotate(0, FastMath.PI, 0);
+        innerNode.attachChild(engineFire);
+    }
+
+    public float getAcceleration() {
+        return acceleration;
     }
 
     private class AlwaysMoveForwardControl extends AbstractControl {

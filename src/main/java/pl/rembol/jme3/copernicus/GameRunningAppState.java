@@ -63,27 +63,27 @@ public class GameRunningAppState extends AbstractAppState {
 //        bumblebee.setPrecisePosition(new Vector3d(8f, -2d, 149_565_000d));
         bumblebee.accelerate(new Vector3d(33.14f, 0, 0));
 
-        Ship bumblebee2 = new Ship(gameState, "bumblebee/bumblebee.blend");
-        bumblebee2.setPrecisePosition(new Vector3d(8f, -2d, 149_565_000.02d));
-        bumblebee2.accelerate(new Vector3d(33.14f, 0, 0));
-        bumblebee2.addControl(new AbstractControl() {
-            float ttl = 5f;
-
-            @Override
-            protected void controlUpdate(float tpf) {
-                bumblebee2.yawRight(tpf / 10);
-                ttl -= tpf;
-                if (ttl < 0) {
-                    new Missile(gameState, bumblebee2);
-                    ttl = 1f;
-                }
-            }
-
-            @Override
-            protected void controlRender(RenderManager rm, ViewPort vp) {
-
-            }
-        });
+//        Ship bumblebee2 = new Ship(gameState, "bumblebee/bumblebee.blend");
+//        bumblebee2.setPrecisePosition(new Vector3d(8f, -2d, 149_565_000.02d));
+//        bumblebee2.accelerate(new Vector3d(33.14f, 0, 0));
+//        bumblebee2.addControl(new AbstractControl() {
+//            float ttl = 5f;
+//
+//            @Override
+//            protected void controlUpdate(float tpf) {
+//                bumblebee2.yawRight(tpf / 10);
+//                ttl -= tpf;
+//                if (ttl < 0) {
+//                    new Missile(gameState, bumblebee2);
+//                    ttl = 1f;
+//                }
+//            }
+//
+//            @Override
+//            protected void controlRender(RenderManager rm, ViewPort vp) {
+//
+//            }
+//        });
 
         gameState.selectionManager.select(gameState.stellarSystem.getObjectForName("Mars"));
 

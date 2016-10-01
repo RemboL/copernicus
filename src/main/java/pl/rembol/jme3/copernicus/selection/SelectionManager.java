@@ -35,8 +35,8 @@ public class SelectionManager {
 
         List<String> status = new ArrayList<>();
         status.add("Name: " + selectedObject.getName());
-        status.add("Distance: " + format(gameState.focusCamera.getCameraPosition().distance(selectedObject.getPrecisePosition()) / 1000) + "m");
-        status.add("Relative velocity: " + format(gameState.focusCamera.getVelocity().distance(selectedObject.getVelocity()) / 1000) + "m/s");
+        status.add("Distance: " + format(gameState.focusCamera.getCameraPosition().distance(selectedObject.getPrecisePosition()) * 1000) + "m");
+        status.add("Relative velocity: " + format(gameState.focusCamera.getVelocity().distance(selectedObject.getVelocity()) * 1000) + "m/s");
 
         return status;
     }
