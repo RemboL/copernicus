@@ -7,9 +7,13 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.light.AmbientLight;
 import com.jme3.math.ColorRGBA;
+import com.jme3.renderer.RenderManager;
+import com.jme3.renderer.ViewPort;
+import com.jme3.scene.control.AbstractControl;
 import com.jme3.scene.plugins.blender.math.Vector3d;
 import com.jme3.system.AppSettings;
 import pl.rembol.jme3.copernicus.config.ConfigLoader;
+import pl.rembol.jme3.copernicus.missile.Missile;
 import pl.rembol.jme3.copernicus.ship.Ship;
 
 public class GameRunningAppState extends AbstractAppState {
@@ -82,7 +86,7 @@ public class GameRunningAppState extends AbstractAppState {
 //        });
 
         gameState.selectionManager.select(gameState.stellarSystem.getObjectForName("Mars"));
-
+//        gameState.selectionManager.select(bumblebee2);
     }
 
 

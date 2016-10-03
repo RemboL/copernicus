@@ -1,6 +1,7 @@
 package pl.rembol.jme3.copernicus.ship;
 
 import com.jme3.math.FastMath;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
@@ -104,6 +105,27 @@ public class Ship extends SpaceObject {
         } else {
             acceleration = -.001f;
         }
+    }
+
+    public void orientTowards(Vector3d target, float value) {
+        // please don't ask how this works...
+        Vector3f targetDirection = getWorldRotation().inverse().mult(target.subtract(getPrecisePosition()).toVector3f()).normalize();
+        if (targetDirection.distance(Vector3f.UNIT_Z) > .01f) {
+            rotate(new Quaternion().fromAngleAxis(value, Vector3f.UNIT_Z.cross(targetDirection)));
+        } else {
+            rotate(new Quaternion().fromAngleAxis(targetDirection.distance(Vector3f.UNIT_Z), Vector3f.UNIT_Z.cross(targetDirection)));
+        }
+    }
+
+    public void matchVelocity(Vector3d targetVelocity, float value) {
+        acceleration = 0;
+        Vector3d deltaVelocity = targetVelocity.subtract(getVelocity());
+
+//        if (deltaVelocity.length() < .001) {
+            accelerate(deltaVelocity);
+//        } else {
+//            accelerate(deltaVelocity.divide(deltaVelocity.length()).mult(value));
+//        }
     }
 
     @Override

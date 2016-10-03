@@ -21,6 +21,8 @@ public class SelectionManager {
         selectionText = new SelectionText(gameState);
 
         gameState.simpleApplication.getStateManager().attach(new UpdateSelectionAppState());
+
+        new SelectionReticle(gameState);
     }
 
     public void select(SpaceObject selectedObject) {
@@ -38,6 +40,10 @@ public class SelectionManager {
         status.add("Relative velocity: " + SelectionTextUtils.relativeVelocity(gameState, selectedObject) + "m/s");
 
         return status;
+    }
+
+    public SpaceObject getSelectedObject() {
+        return selectedObject;
     }
 
     private class UpdateSelectionAppState extends AbstractAppState {

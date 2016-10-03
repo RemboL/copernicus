@@ -10,9 +10,9 @@ import pl.rembol.jme3.copernicus.ship.Ship;
 public class ShipControl implements AnalogListener, ActionListener {
 
     private final GameState gameState;
-    
+
     private Ship ship;
-    
+
     public ShipControl(GameState gameState) {
         this.gameState = gameState;
     }
@@ -74,7 +74,19 @@ public class ShipControl implements AnalogListener, ActionListener {
             ship.fireMissile();
         }
     }
-    
+
+    private void matchVelocityToTarget(float value) {
+        if (ship != null && gameState.selectionManager.getSelectedObject() != null) {
+            ship.matchVelocity(gameState.selectionManager.getSelectedObject().getVelocity(), value);
+        }
+    }
+
+    private void orientTowardsTarget(float value) {
+        if (ship != null && gameState.selectionManager.getSelectedObject() != null) {
+            ship.orientTowards(gameState.selectionManager.getSelectedObject().getPrecisePosition(), value);
+        }
+    }
+
     private void openSelectionWindow() {
         gameState.windowManager.addWindowCentered(new SelectionWindow(gameState));
     }
@@ -100,6 +112,12 @@ public class ShipControl implements AnalogListener, ActionListener {
             case KeyInputManager.E:
                 rollRight(value);
                 break;
+            case KeyInputManager.M:
+                matchVelocityToTarget(value);
+                break;
+            case KeyInputManager.O:
+                orientTowardsTarget(value);
+                break;
             case MouseInputManager.MOUSE_SCROLL_UP:
                 throttleUp(value);
                 break;
@@ -122,5 +140,5 @@ public class ShipControl implements AnalogListener, ActionListener {
             }
         }
     }
-    
+
 }
