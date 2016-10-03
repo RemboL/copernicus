@@ -1,39 +1,20 @@
 package pl.rembol.jme3.copernicus;
 
-import com.jme3.input.InputManager;
-import com.jme3.input.KeyInput;
-import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
-import com.jme3.input.controls.KeyTrigger;
-import com.jme3.input.controls.MouseAxisTrigger;
+import pl.rembol.jme3.copernicus.input.KeyInputManager;
+import pl.rembol.jme3.copernicus.input.MouseInputManager;
+import pl.rembol.jme3.copernicus.selection.window.SelectionWindow;
 import pl.rembol.jme3.copernicus.ship.Ship;
 
 public class ShipControl implements AnalogListener, ActionListener {
 
-    private static final String YAW_LEFT = "shipControl_yawLeft";
-
-    private static final String YAW_RIGHT = "shipControl_yawRight";
-
-    private static final String PITCH_UP = "shipControl_pitchUp";
-
-    private static final String PITCH_DOWN = "shipControl_pitchDown";
-
-    private static final String ROLL_LEFT = "shipControl_rollLeft";
-
-    private static final String ROLL_RIGHT = "shipControl_rollRight";
-
-    private static final String THROTTLE_UP = "shipControl_throttleUp";
-
-    private static final String THROTTLE_DOWN = "shipControl_throttleDown";
-
-    private static final String FIRE_MISSILE = "shipControl_fireMissile";
-
+    private final GameState gameState;
+    
     private Ship ship;
-
-    ShipControl(InputManager inputManager) {
-
-        registerInput(inputManager);
+    
+    public ShipControl(GameState gameState) {
+        this.gameState = gameState;
     }
 
     public void control(Ship ship) {
@@ -93,32 +74,36 @@ public class ShipControl implements AnalogListener, ActionListener {
             ship.fireMissile();
         }
     }
+    
+    private void openSelectionWindow() {
+        gameState.windowManager.addWindowCentered(new SelectionWindow(gameState));
+    }
 
     @Override
     public void onAnalog(String name, float value, float tpf) {
         switch (name) {
-            case YAW_LEFT:
+            case KeyInputManager.A:
                 yawLeft(value);
                 break;
-            case YAW_RIGHT:
+            case KeyInputManager.D:
                 yawRight(value);
                 break;
-            case PITCH_UP:
+            case KeyInputManager.W:
                 pitchUp(value);
                 break;
-            case PITCH_DOWN:
+            case KeyInputManager.S:
                 pitchDown(value);
                 break;
-            case ROLL_LEFT:
+            case KeyInputManager.Q:
                 rollLeft(value);
                 break;
-            case ROLL_RIGHT:
+            case KeyInputManager.E:
                 rollRight(value);
                 break;
-            case THROTTLE_UP:
+            case MouseInputManager.MOUSE_SCROLL_UP:
                 throttleUp(value);
                 break;
-            case THROTTLE_DOWN:
+            case MouseInputManager.MOUSE_SCROLL_DOWN:
                 throttleDown(value);
                 break;
         }
@@ -128,33 +113,14 @@ public class ShipControl implements AnalogListener, ActionListener {
     public void onAction(String name, boolean isPressed, float tpf) {
         if (isPressed) {
             switch (name) {
-                case FIRE_MISSILE:
+                case KeyInputManager.TAB:
+                    openSelectionWindow();
+                    break;
+                case MouseInputManager.LEFT_CLICK:
                     fireMissile();
                     break;
             }
         }
     }
-
-    private void registerInput(InputManager inputManager) {
-        registerKey(inputManager, PITCH_UP, KeyInput.KEY_W);
-        registerKey(inputManager, PITCH_DOWN, KeyInput.KEY_S);
-        registerKey(inputManager, YAW_LEFT, KeyInput.KEY_A);
-        registerKey(inputManager, YAW_RIGHT, KeyInput.KEY_D);
-        registerKey(inputManager, ROLL_LEFT, KeyInput.KEY_Q);
-        registerKey(inputManager, ROLL_RIGHT, KeyInput.KEY_E);
-        registerKey(inputManager, FIRE_MISSILE, KeyInput.KEY_SPACE);
-
-        inputManager.addMapping(THROTTLE_UP, new MouseAxisTrigger(MouseInput.AXIS_WHEEL, false));
-        inputManager.addMapping(THROTTLE_DOWN, new MouseAxisTrigger(MouseInput.AXIS_WHEEL, true));
-        inputManager.addListener(this, THROTTLE_UP);
-        inputManager.addListener(this, THROTTLE_DOWN);
-
-    }
-
-    private void registerKey(InputManager inputManager, String name, int key) {
-        inputManager.addMapping(name, new KeyTrigger(key));
-        inputManager.addListener(this, name);
-    }
-
-
+    
 }

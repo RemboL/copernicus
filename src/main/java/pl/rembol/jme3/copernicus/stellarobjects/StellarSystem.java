@@ -59,4 +59,8 @@ public class StellarSystem {
                 .findFirst()
                 .orElse(null);
     }
+    
+    public Set<AstralObject> getAstralObjects() {
+        return astralObjects;
+    } 
 }
