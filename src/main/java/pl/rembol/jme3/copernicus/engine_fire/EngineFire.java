@@ -35,7 +35,7 @@ public class EngineFire extends Node {
         this.ship = ship;
 
         model =(Node) gameState.assetManager
-                .loadModel("engine_fire/engine_fire.blend");
+                .loadModel("engine_fire/engine_fire.mesh.xml");
         attachChild(model);
         setLocalScale(scale);
         model.setQueueBucket(RenderQueue.Bucket.Transparent);
@@ -81,14 +81,14 @@ public class EngineFire extends Node {
         if (!(material.getAdditionalRenderState().getBlendMode() == RenderState.BlendMode.Alpha)) {
             material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
         }
-        rewriteAlpha(material, alpha);
-
+        rewriteAlpha(material, "Diffuse", alpha);
+        rewriteAlpha(material, "Ambient", alpha);
     }
 
-    private void rewriteAlpha(Material material, float alpha) {
-        ColorRGBA color = ((ColorRGBA) material.getParam("Color").getValue());
+    private void rewriteAlpha(Material material, String colorName, float alpha) {
+        ColorRGBA color = ((ColorRGBA) material.getParam(colorName).getValue());
         color.a = alpha;
-        material.setColor("Color", color);
+        material.setColor(colorName, color);
     }
 
     private class EngineControl extends AbstractControl {
