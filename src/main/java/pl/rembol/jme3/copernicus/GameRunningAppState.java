@@ -58,7 +58,9 @@ public class GameRunningAppState extends AbstractAppState {
 
         Ship bumblebee = new Ship(gameState, "bumblebee/bumblebee.blend");
         gameState.focusCamera.setFocusAt(bumblebee);
-        gameState.shipControl.control(bumblebee);
+
+        gameState.controlledShip = bumblebee;
+
         bumblebee.setPrecisePosition(new Vector3d(227_936_637d, 0d, 35_000d));
 //        bumblebee.setPrecisePosition(new Vector3d(8f, -2d, 149_565_000d));
         bumblebee.accelerate(new Vector3d(33.14f, 0, 0));

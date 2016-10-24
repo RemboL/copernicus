@@ -16,6 +16,7 @@ import com.jme3.scene.control.AbstractControl;
 import com.jme3.shadow.PointLightShadowRenderer;
 import pl.rembol.jme3.copernicus.GameState;
 import pl.rembol.jme3.copernicus.ship.Ship;
+import pl.rembol.jme3.utils.Materials;
 
 public class EngineFire extends Node {
 
@@ -61,34 +62,9 @@ public class EngineFire extends Node {
     }
 
     private void updatePower() {
-        setAlpha(model, power * .5f);
+        Materials.setAlpha(model, power * .5f);
         model.setLocalScale(new Vector3f(1f, 1f, power));
         pointLight.setColor(new ColorRGBA(1f, .85f, .5f, 1f).mult(power * .5f));
-    }
-
-    private void setAlpha(Node node, float alpha) {
-        for (Spatial spatial : node.getChildren()) {
-            if(spatial instanceof Node) {
-                setAlpha((Node)spatial, alpha);
-            } else if(spatial instanceof Geometry) {
-                setAlpha((Geometry)spatial, alpha);
-            }
-        }
-    }
-
-    private void setAlpha(Geometry geometry, float alpha) {
-        Material material = geometry.getMaterial();
-        if (!(material.getAdditionalRenderState().getBlendMode() == RenderState.BlendMode.Alpha)) {
-            material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-        }
-        rewriteAlpha(material, "Diffuse", alpha);
-        rewriteAlpha(material, "Ambient", alpha);
-    }
-
-    private void rewriteAlpha(Material material, String colorName, float alpha) {
-        ColorRGBA color = ((ColorRGBA) material.getParam(colorName).getValue());
-        color.a = alpha;
-        material.setColor(colorName, color);
     }
 
     private class EngineControl extends AbstractControl {

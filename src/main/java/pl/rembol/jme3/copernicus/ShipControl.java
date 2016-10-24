@@ -5,85 +5,89 @@ import com.jme3.input.controls.AnalogListener;
 import pl.rembol.jme3.copernicus.input.KeyInputManager;
 import pl.rembol.jme3.copernicus.input.MouseInputManager;
 import pl.rembol.jme3.copernicus.selection.window.SelectionWindow;
-import pl.rembol.jme3.copernicus.ship.Ship;
+import pl.rembol.jme3.copernicus.ship.maneuver.MatchSpeedManeuver;
+import pl.rembol.jme3.copernicus.ship.maneuver.OrientShipManeuver;
 
 public class ShipControl implements AnalogListener, ActionListener {
 
     private final GameState gameState;
 
-    private Ship ship;
-
     public ShipControl(GameState gameState) {
         this.gameState = gameState;
     }
 
-    public void control(Ship ship) {
-        this.ship = ship;
-    }
-
     private void yawLeft(float value) {
-        if (ship != null) {
-            ship.yawLeft(value);
+        if (gameState.controlledShip != null) {
+            gameState.controlledShip.disableAutoPilot();
+            gameState.controlledShip.yawLeft(value);
         }
     }
 
     private void yawRight(float value) {
-        if (ship != null) {
-            ship.yawRight(value);
+        if (gameState.controlledShip != null) {
+            gameState.controlledShip.disableAutoPilot();
+            gameState.controlledShip.yawRight(value);
         }
     }
 
     private void pitchUp(float value) {
-        if (ship != null) {
-            ship.pitchUp(value);
+        if (gameState.controlledShip != null) {
+            gameState.controlledShip.disableAutoPilot();
+            gameState.controlledShip.pitchUp(value);
         }
     }
 
     private void pitchDown(float value) {
-        if (ship != null) {
-            ship.pitchDown(value);
+        if (gameState.controlledShip != null) {
+            gameState.controlledShip.disableAutoPilot();
+            gameState.controlledShip.pitchDown(value);
         }
     }
 
     private void rollLeft(float value) {
-        if (ship != null) {
-            ship.rollLeft(value);
+        if (gameState.controlledShip != null) {
+            gameState.controlledShip.disableAutoPilot();
+            gameState.controlledShip.rollLeft(value);
         }
     }
 
     private void rollRight(float value) {
-        if (ship != null) {
-            ship.rollRight(value);
+        if (gameState.controlledShip != null) {
+            gameState.controlledShip.disableAutoPilot();
+            gameState.controlledShip.rollRight(value);
         }
     }
 
     private void throttleUp(float value) {
-        if (ship != null) {
-            ship.throttleUp(value);
+        if (gameState.controlledShip != null) {
+            gameState.controlledShip.disableAutoPilot();
+            gameState.controlledShip.throttleUp(value);
         }
     }
 
     private void throttleDown(float value) {
-        if (ship != null) {
-            ship.throttleDown(value);
+        if (gameState.controlledShip != null) {
+            gameState.controlledShip.disableAutoPilot();
+            gameState.controlledShip.throttleDown(value);
         }
     }
 
     private void fireMissile() {
-        if (ship != null) {
-            ship.fireMissile();
+        if (gameState.controlledShip != null) {
+            gameState.controlledShip.disableAutoPilot();
+            gameState.controlledShip.fireMissile();
         }
     }
 
-    private void matchVelocityToTarget(float value) {
-        if (ship != null && gameState.selectionManager.getSelectedObject() != null) {
-            ship.matchVelocity(gameState.selectionManager.getSelectedObject().getVelocity(), value);
+    private void matchSpeedManeuver() {
+        if (gameState.controlledShip != null && gameState.selectionManager.getSelectedObject() != null) {
+            gameState.controlledShip.setManeuver(new MatchSpeedManeuver(gameState.selectionManager.getSelectedObject()));
         }
     }
 
-    private void orientTowardsTarget(float value) {
-        if (ship != null && gameState.selectionManager.getSelectedObject() != null) {
-            ship.orientTowards(gameState.selectionManager.getSelectedObject().getPrecisePosition(), value);
+    private void orientTowardsTargetManeuver() {
+        if (gameState.controlledShip != null && gameState.selectionManager.getSelectedObject() != null) {
+            gameState.controlledShip.setManeuver(new OrientShipManeuver(gameState.selectionManager.getSelectedObject()));
         }
     }
 
@@ -112,12 +116,6 @@ public class ShipControl implements AnalogListener, ActionListener {
             case KeyInputManager.E:
                 rollRight(value);
                 break;
-            case KeyInputManager.M:
-                matchVelocityToTarget(value);
-                break;
-            case KeyInputManager.O:
-                orientTowardsTarget(value);
-                break;
             case MouseInputManager.MOUSE_SCROLL_UP:
                 throttleUp(value);
                 break;
@@ -133,6 +131,12 @@ public class ShipControl implements AnalogListener, ActionListener {
             switch (name) {
                 case KeyInputManager.TAB:
                     openSelectionWindow();
+                    break;
+                case KeyInputManager.M:
+                    matchSpeedManeuver();
+                    break;
+                case KeyInputManager.O:
+                    orientTowardsTargetManeuver();
                     break;
                 case MouseInputManager.LEFT_CLICK:
                     fireMissile();

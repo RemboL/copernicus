@@ -15,15 +15,20 @@ import pl.rembol.jme3.copernicus.engine_fire.EngineFire;
 import pl.rembol.jme3.copernicus.missile.Missile;
 import pl.rembol.jme3.copernicus.objects.KeepTranslationRelativeToCameraFocusControl;
 import pl.rembol.jme3.copernicus.objects.SpaceObject;
+import pl.rembol.jme3.copernicus.ship.maneuver.ManeuveringControl;
+import pl.rembol.jme3.copernicus.ship.maneuver.MatchSpeedManeuver;
+import pl.rembol.jme3.copernicus.ship.maneuver.WithManeuveringControl;
 
-public class Ship extends SpaceObject {
+public class Ship extends SpaceObject implements WithManeuveringControl {
+
+    private float maxAcceleration = 1f;
 
     private float acceleration = 0f;
 
     public Ship(GameState gameState, String modelName) {
         super(gameState, "ship");
 
-        Node model =(Node) gameState.assetManager
+        Node model = (Node) gameState.assetManager
                 .loadModel(modelName);
         attachChild(model);
         model.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
@@ -31,6 +36,7 @@ public class Ship extends SpaceObject {
         innerNode.attachChild(model);
 
         addControl(new AlwaysMoveForwardControl());
+        addControl(new ManeuveringControl(gameState, this));
 
         EngineFire engineFire = new EngineFire(gameState, .00035f, this);
         engineFire.setLocalTranslation(new Vector3f(0f, 0.0001f, -.00065f));
@@ -46,7 +52,7 @@ public class Ship extends SpaceObject {
 
         @Override
         protected void controlUpdate(float tpf) {
-            throttle(tpf);
+            accelerate(tpf);
         }
 
         @Override
@@ -55,7 +61,7 @@ public class Ship extends SpaceObject {
         }
     }
 
-    void throttle(float value) {
+    void accelerate(float value) {
         accelerate(new Vector3d(getWorldRotation().mult(Vector3f.UNIT_Z).mult(value * acceleration)));
     }
 
@@ -83,6 +89,18 @@ public class Ship extends SpaceObject {
         rotate(0, 0, value);
     }
 
+    public void fullThrottle() {
+        setThrottle(maxAcceleration);
+    }
+
+    public void stopEngines() {
+        setThrottle(0);
+    }
+
+    public void setThrottle(float value) {
+        acceleration = Math.max(0, Math.min(value, maxAcceleration));
+    }
+
     public void throttleUp(float value) {
         if (acceleration >= .001f) {
             acceleration *= 1.1;
@@ -107,6 +125,7 @@ public class Ship extends SpaceObject {
         }
     }
 
+
     public void orientTowards(Vector3d target, float value) {
         // please don't ask how this works...
         Vector3f targetDirection = getWorldRotation().inverse().mult(target.subtract(getPrecisePosition()).toVector3f()).normalize();
@@ -117,15 +136,9 @@ public class Ship extends SpaceObject {
         }
     }
 
-    public void matchVelocity(Vector3d targetVelocity, float value) {
-        acceleration = 0;
-        Vector3d deltaVelocity = targetVelocity.subtract(getVelocity());
-
-//        if (deltaVelocity.length() < .001) {
-            accelerate(deltaVelocity);
-//        } else {
-//            accelerate(deltaVelocity.divide(deltaVelocity.length()).mult(value));
-//        }
+    public boolean isLookingAt(Vector3d target, float admissibleError) {
+        float error = getWorldRotation().mult(Vector3f.UNIT_Z).distance(target.subtract(getPrecisePosition()).normalize().toVector3f());
+        return error < admissibleError;
     }
 
     @Override
