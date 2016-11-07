@@ -2,13 +2,13 @@ package pl.rembol.jme3.copernicus.selection.window;
 
 import com.jme3.math.Vector2f;
 import pl.rembol.jme3.copernicus.GameState;
-import pl.rembol.jme3.copernicus.gui.window.Window;
 import pl.rembol.jme3.copernicus.stellarobjects.AstralObject;
+import pl.rembol.jme3.game.gui.window.Window;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SelectionWindow extends Window {
+public class SelectionWindow extends Window<GameState> {
 
     public SelectionWindow(GameState gameState) {
         super(gameState, "select", new Vector2f(510, 300));

@@ -43,34 +43,20 @@
 
     <dependencies>
         <dependency>
-            <artifactId>common</artifactId>
+            <artifactId>generic-game</artifactId>
             <groupId>pl.rembol.jme3.game</groupId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-
-        <!-- The core library -->
         <dependency>
-            <groupId>org.jmonkeyengine</groupId>
-            <artifactId>jme3-core</artifactId>
-            <version>${jmonkey.version}</version>
-        </dependency>
-
-        <!-- LWJGL stuff -->
-        <dependency>
-            <groupId>org.jmonkeyengine</groupId>
-            <artifactId>jme3-lwjgl</artifactId>
-            <version>${jmonkey.version}</version>
+            <artifactId>common</artifactId>
+            <groupId>pl.rembol.jme3.game</groupId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <!-- Bullet stuff -->
         <dependency>
             <groupId>org.jmonkeyengine</groupId>
             <artifactId>jme3-bullet</artifactId>
-            <version>${jmonkey.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jmonkeyengine</groupId>
-            <artifactId>jme3-bullet-native</artifactId>
             <version>${jmonkey.version}</version>
         </dependency>
 
@@ -90,25 +76,7 @@
             <artifactId>jme3-effects</artifactId>
             <version>${jmonkey.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.jmonkeyengine</groupId>
-            <artifactId>jme3-networking</artifactId>
-            <version>${jmonkey.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jmonkeyengine</groupId>
-            <artifactId>jme3-plugins</artifactId>
-            <version>${jmonkey.version}</version>
-        </dependency>
 
-        <!-- Ogg audio stuff -->
-        <dependency>
-            <groupId>org.jmonkeyengine</groupId>
-            <artifactId>jme3-jogg</artifactId>
-            <version>${jmonkey.version}</version>
-        </dependency>
-
-        <!-- XStream -->
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>

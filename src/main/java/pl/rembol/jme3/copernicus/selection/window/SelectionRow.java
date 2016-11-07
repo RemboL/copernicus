@@ -14,9 +14,9 @@ import com.jme3.scene.Node;
 import com.jme3.scene.control.AbstractControl;
 import com.jme3.scene.shape.Quad;
 import pl.rembol.jme3.copernicus.GameState;
-import pl.rembol.jme3.copernicus.gui.Clickable;
 import pl.rembol.jme3.copernicus.objects.SpaceObject;
 import pl.rembol.jme3.copernicus.selection.SelectionTextUtils;
+import pl.rembol.jme3.game.gui.Clickable;
 import pl.rembol.jme3.geom.Rectangle2f;
 
 class SelectionRow extends Node implements Clickable {

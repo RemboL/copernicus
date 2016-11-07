@@ -14,19 +14,12 @@ import pl.rembol.jme3.copernicus.ship.Ship;
 
 public class GameRunningAppState extends AbstractAppState {
 
-    int frame = 200;
-
     private AppSettings settings;
 
     private GameState gameState;
 
     public GameRunningAppState(AppSettings settings) {
         this.settings = settings;
-    }
-
-    @Override
-    public void update(float tpf) {
-        frame++;
     }
 
     @Override

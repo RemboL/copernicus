@@ -1,19 +1,16 @@
 package pl.rembol.jme3.copernicus;
 
-import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.AnalogListener;
-import pl.rembol.jme3.copernicus.input.KeyInputManager;
-import pl.rembol.jme3.copernicus.input.MouseInputManager;
 import pl.rembol.jme3.copernicus.selection.window.SelectionWindow;
 import pl.rembol.jme3.copernicus.ship.maneuver.MatchSpeedManeuver;
 import pl.rembol.jme3.copernicus.ship.maneuver.OrientShipManeuver;
+import pl.rembol.jme3.game.input.InputListener;
+import pl.rembol.jme3.game.input.KeyInputManager;
+import pl.rembol.jme3.game.input.MouseInputManager;
 
-public class ShipControl implements AnalogListener, ActionListener {
-
-    private final GameState gameState;
+public class ShipControl extends InputListener<GameState> {
 
     public ShipControl(GameState gameState) {
-        this.gameState = gameState;
+        super(gameState);
     }
 
     private void yawLeft(float value) {
