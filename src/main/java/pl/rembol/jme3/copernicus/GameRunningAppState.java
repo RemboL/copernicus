@@ -7,13 +7,9 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.light.AmbientLight;
 import com.jme3.math.ColorRGBA;
-import com.jme3.renderer.RenderManager;
-import com.jme3.renderer.ViewPort;
-import com.jme3.scene.control.AbstractControl;
 import com.jme3.scene.plugins.blender.math.Vector3d;
 import com.jme3.system.AppSettings;
 import pl.rembol.jme3.copernicus.config.ConfigLoader;
-import pl.rembol.jme3.copernicus.missile.Missile;
 import pl.rembol.jme3.copernicus.ship.Ship;
 
 public class GameRunningAppState extends AbstractAppState {
@@ -56,7 +52,7 @@ public class GameRunningAppState extends AbstractAppState {
 
         new ConfigLoader(gameState).loadFromFile("solar_system.yml");
 
-        Ship bumblebee = new Ship(gameState, "bumblebee/bumblebee.blend");
+        Ship bumblebee = new Ship(gameState, "bumblebee/bumblebee.blend", .003f);
         gameState.focusCamera.setFocusAt(bumblebee);
 
         gameState.controlledShip = bumblebee;
@@ -65,8 +61,9 @@ public class GameRunningAppState extends AbstractAppState {
 //        bumblebee.setPrecisePosition(new Vector3d(8f, -2d, 149_565_000d));
         bumblebee.accelerate(new Vector3d(33.14f, 0, 0));
 
-//        Ship bumblebee2 = new Ship(gameState, "bumblebee/bumblebee.blend");
-//        bumblebee2.setPrecisePosition(new Vector3d(8f, -2d, 149_565_000.02d));
+        Ship bumblebee2 = new Ship(gameState, "bumblebee/bumblebee.blend", .003f);
+        bumblebee2.setPrecisePosition(new Vector3d(227_936_637.01d, 0d, 35_000d));
+        bumblebee2.accelerate(new Vector3d(33.14f, 0, 0));
 //        bumblebee2.accelerate(new Vector3d(33.14f, 0, 0));
 //        bumblebee2.addControl(new AbstractControl() {
 //            float ttl = 5f;

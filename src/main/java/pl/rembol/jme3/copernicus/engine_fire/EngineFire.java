@@ -1,15 +1,12 @@
 package pl.rembol.jme3.copernicus.engine_fire;
 
 import com.jme3.light.PointLight;
-import com.jme3.material.Material;
-import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
@@ -62,7 +59,9 @@ public class EngineFire extends Node {
     }
 
     private void updatePower() {
-        Materials.setAlpha(model, power * .5f);
+        Materials.setAlpha(model, "Diffuse", power * .5f);
+        Materials.setAlpha(model, "Specular", power * .5f);
+        Materials.setAlpha(model, "Ambient", power * .5f);
         model.setLocalScale(new Vector3f(1f, 1f, power));
         pointLight.setColor(new ColorRGBA(1f, .85f, .5f, 1f).mult(power * .5f));
     }

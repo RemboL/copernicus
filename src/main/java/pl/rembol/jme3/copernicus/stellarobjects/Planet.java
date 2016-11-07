@@ -35,7 +35,7 @@ public class Planet extends AstralObject {
     }
 
     public void addAtmosphere(String texture, float height, float rotation) {
-        Geometry atmosphere = new Geometry("sphere", new Sphere(36, 36, Math.max(radius * 1.05f, radius + height)));
+        Geometry atmosphere = new Geometry("sphere", new Sphere(36, 36, Math.max((float) radius * 1.05f, (float) radius + height)));
         Material atmosphereMaterial = new Material(gameState.assetManager,
                 "Common/MatDefs/Light/Lighting.j3md");
         atmosphereMaterial.setTexture("DiffuseMap", gameState.assetManager.loadTexture(texture));

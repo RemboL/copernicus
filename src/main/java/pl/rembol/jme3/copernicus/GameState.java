@@ -16,7 +16,7 @@ import pl.rembol.jme3.copernicus.objects.GravityAppState;
 import pl.rembol.jme3.copernicus.selection.SelectionManager;
 import pl.rembol.jme3.copernicus.ship.Ship;
 import pl.rembol.jme3.copernicus.stellarobjects.StellarSystem;
-import pl.rembol.jme3.rts.threads.ThreadManager;
+import pl.rembol.jme3.threads.ThreadManager;
 
 public class GameState {
 

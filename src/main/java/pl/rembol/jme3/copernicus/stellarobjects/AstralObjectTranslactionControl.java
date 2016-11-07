@@ -26,7 +26,7 @@ public class AstralObjectTranslactionControl extends KeepTranslationRelativeToCa
 
     @Override
     protected void translateInFarSpace(Vector3f worldPosition) {
-        float distance = worldPosition.length() - spaceObject.getRadius();
+        float distance = worldPosition.length() - (float) spaceObject.getRadius();
         float newDistance = FastMath.log(distance - FAR_SIGHT_RANGE + 1, 1.01f) + FAR_SIGHT_RANGE - 1;
         float newScale = newDistance / distance;
         Vector3f newWorldPosition = worldPosition.mult(newScale);

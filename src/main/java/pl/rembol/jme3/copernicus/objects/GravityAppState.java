@@ -1,13 +1,13 @@
 package pl.rembol.jme3.copernicus.objects;
 
-import com.jme3.app.state.AbstractAppState;
-import com.jme3.scene.plugins.blender.math.Vector3d;
-import pl.rembol.jme3.copernicus.GameState;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import com.jme3.app.state.AbstractAppState;
+import com.jme3.scene.plugins.blender.math.Vector3d;
+import pl.rembol.jme3.copernicus.GameState;
 
 public class GravityAppState extends AbstractAppState {
 
@@ -30,12 +30,37 @@ public class GravityAppState extends AbstractAppState {
     public void update(float tpf) {
 
         currentPositions.keySet().stream().filter(SpaceObject::isCollidable).filter(this::collidesWithAstralObject).collect(Collectors.toList()).stream().forEach(SpaceObject::destroy);
+
+        checkCollisions();
+
         currentPositions.keySet().stream().filter(SpaceObject::isDestroyed).collect(Collectors.toList()).stream().forEach(this::remove);
 
         currentPositions.keySet().forEach(spaceObject -> updateVelocity(spaceObject, tpf));
-        currentPositions.keySet().forEach(spaceObject -> spaceObject.preciseMove(spaceObject.velocity.mult(tpf * SCALE)));
+        currentPositions.keySet().forEach(spaceObject -> move(spaceObject, spaceObject.velocity.mult(tpf * SCALE)));
 
         currentPositions.putAll(nextPositions);
+    }
+
+    private void checkCollisions() {
+        List<SpaceObject> collisionCandidates = currentPositions.keySet()
+                .stream()
+                .filter(SpaceObject::isCollidable)
+                .filter(spaceObject -> !spaceObject.isDestroyed())
+                .filter(spaceObject -> spaceObject.getPrecisePosition().distance(
+                        gameState.controlledShip.getPrecisePosition()) < 1000)
+                .collect(Collectors.toList());
+
+        for (int i = 0; i < collisionCandidates.size(); ++i) {
+            for (int j = i + 1; j < collisionCandidates.size(); ++j) {
+                SpaceObject object1 = collisionCandidates.get(i);
+                SpaceObject object2 = collisionCandidates.get(j);
+
+                if (object1.getPrecisePosition().distance(
+                        object2.getPrecisePosition()) <= object1.getRadius() + object2.getRadius()) {
+                    // handle collision between object1 and object2
+                }
+            }
+        }
     }
 
     private boolean collidesWithAstralObject(SpaceObject spaceObject) {

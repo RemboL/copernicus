@@ -16,7 +16,6 @@ import pl.rembol.jme3.copernicus.missile.Missile;
 import pl.rembol.jme3.copernicus.objects.KeepTranslationRelativeToCameraFocusControl;
 import pl.rembol.jme3.copernicus.objects.SpaceObject;
 import pl.rembol.jme3.copernicus.ship.maneuver.ManeuveringControl;
-import pl.rembol.jme3.copernicus.ship.maneuver.MatchSpeedManeuver;
 import pl.rembol.jme3.copernicus.ship.maneuver.WithManeuveringControl;
 
 public class Ship extends SpaceObject implements WithManeuveringControl {
@@ -25,8 +24,8 @@ public class Ship extends SpaceObject implements WithManeuveringControl {
 
     private float acceleration = 0f;
 
-    public Ship(GameState gameState, String modelName) {
-        super(gameState, "ship");
+    public Ship(GameState gameState, String modelName, double radius) {
+        super(gameState, modelName, radius);
 
         Node model = (Node) gameState.assetManager
                 .loadModel(modelName);

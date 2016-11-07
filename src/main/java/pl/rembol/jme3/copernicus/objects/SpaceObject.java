@@ -12,15 +12,18 @@ abstract public class SpaceObject extends Node {
 
     protected final Node innerNode = new Node();
 
+    protected double radius;
+
     Vector3d velocity = new Vector3d(0, 0, 0);
 
     protected boolean isDestroyed = false;
 
     private KeepTranslationRelativeToCameraFocusControl control;
 
-    public SpaceObject(GameState gameState, String name) {
+    public SpaceObject(GameState gameState, String name, double radius) {
         super(name);
         this.gameState = gameState;
+        this.radius = radius;
 
         control = createTranslationControl();
         addControl(control);
@@ -41,10 +44,6 @@ abstract public class SpaceObject extends Node {
 
     public Vector3d getPrecisePosition() {
         return gameState.gravityAppState.getPosition(this);
-    }
-
-    public void preciseMove(Vector3d delta) {
-        gameState.gravityAppState.move(this, delta);
     }
 
     abstract protected KeepTranslationRelativeToCameraFocusControl createTranslationControl();
@@ -76,6 +75,10 @@ abstract public class SpaceObject extends Node {
 
     protected boolean isCollidable() {
         return true;
+    }
+
+    public double getRadius() {
+        return radius;
     }
 
     protected AstralObject getGravityWellCenter() {

@@ -44,7 +44,7 @@
     <dependencies>
         <dependency>
             <artifactId>common</artifactId>
-            <groupId>pl.rembol.jme3.rts</groupId>
+            <groupId>pl.rembol.jme3.game</groupId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 

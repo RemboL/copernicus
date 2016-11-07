@@ -1,5 +1,7 @@
 package pl.rembol.jme3.copernicus.missile;
 
+import java.util.List;
+
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
@@ -12,8 +14,6 @@ import pl.rembol.jme3.copernicus.effects.ExplosionEffect;
 import pl.rembol.jme3.copernicus.objects.KeepTranslationRelativeToCameraFocusControl;
 import pl.rembol.jme3.copernicus.objects.SpaceObject;
 import pl.rembol.jme3.copernicus.ship.ShipTranslationControl;
-
-import java.util.List;
 
 public class Missile extends SpaceObject {
 
@@ -28,7 +28,7 @@ public class Missile extends SpaceObject {
     private boolean isArmed = false;
 
     public Missile(GameState gameState, SpaceObject origin) {
-        super(gameState, "ship");
+        super(gameState, "ship", .0005);
         this.origin = origin;
 
         Node model = (Node) gameState.assetManager
