@@ -6,10 +6,14 @@ import pl.rembol.jme3.copernicus.objects.SpaceObject;
 
 public class AstralObject extends SpaceObject {
 
+    protected double radius;
+
     protected double mass;
 
     public AstralObject(GameState gameState, String name, double radius, double mass) {
-        super(gameState, name, radius);
+        super(gameState, name);
+
+        this.radius = radius;
         this.mass = mass;
 
         gameState.stellarSystem.register(this);
@@ -17,6 +21,10 @@ public class AstralObject extends SpaceObject {
 
     public double getMass() {
         return mass;
+    }
+
+    public double getRadius() {
+        return radius;
     }
 
     @Override
@@ -28,11 +36,6 @@ public class AstralObject extends SpaceObject {
         if (spaceObject == this) {
             return false;
         }
-        return getPrecisePosition().distance(spaceObject.getPrecisePosition()) < getRadius();
-    }
-
-    @Override
-    protected boolean isCollidable() {
-        return false; // collisions with astral objects are calculated manually
+        return getPrecisePosition().distance(spaceObject.getPrecisePosition()) < radius;
     }
 }

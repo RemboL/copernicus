@@ -32,7 +32,7 @@ public class EngineFire extends Node {
         this.gameState = gameState;
         this.ship = ship;
 
-        model =(Node) gameState.assetManager
+        model = (Node) gameState.assetManager
                 .loadModel("engine_fire/engine_fire.mesh.xml");
         attachChild(model);
         setLocalScale(scale);
@@ -51,6 +51,7 @@ public class EngineFire extends Node {
         pointLightShadowRenderer.setLight(pointLight);
         pointLightShadowRenderer.setShadowIntensity(1f);
         gameState.simpleApplication.getViewPort().addProcessor(pointLightShadowRenderer);
+        updatePower();
     }
 
     private void setPower(float power) {
@@ -63,6 +64,17 @@ public class EngineFire extends Node {
         Materials.setAlpha(model, "Specular", power * .5f);
         Materials.setAlpha(model, "Ambient", power * .5f);
         model.setLocalScale(new Vector3f(1f, 1f, power));
+
+        if (power < .1f && pointLight.isEnabled()) {
+            pointLight.setEnabled(false);
+            gameState.simpleApplication.getViewPort().removeProcessor(pointLightShadowRenderer);
+        } else {
+            if (power > .1f && !pointLight.isEnabled()) {
+                pointLight.setEnabled(true);
+                gameState.simpleApplication.getViewPort().addProcessor(pointLightShadowRenderer);
+            }
+        }
+
         pointLight.setColor(new ColorRGBA(1f, .85f, .5f, 1f).mult(power * .5f));
     }
 

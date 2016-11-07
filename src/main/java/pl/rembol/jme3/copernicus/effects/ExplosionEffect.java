@@ -27,7 +27,7 @@ public class ExplosionEffect extends SpaceObject {
     private float strength = 1f; // determines radius of light effect and fire ball size
 
     public ExplosionEffect(GameState gameState, SpaceObject origin, float strength) {
-        super(gameState, "Explosion", 1f);
+        super(gameState, "Explosion");
         this.strength = strength;
 
         Geometry geometry = new Geometry("sphere", new Sphere(36, 36, 1f));
@@ -102,10 +102,5 @@ public class ExplosionEffect extends SpaceObject {
     @Override
     protected KeepTranslationRelativeToCameraFocusControl createTranslationControl() {
         return new ShipTranslationControl(this);
-    }
-
-    @Override
-    protected boolean isCollidable() {
-        return false;
     }
 }

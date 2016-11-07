@@ -28,7 +28,7 @@ public class Missile extends SpaceObject {
     private boolean isArmed = false;
 
     public Missile(GameState gameState, SpaceObject origin) {
-        super(gameState, "ship", .0005);
+        super(gameState, "ship");
         this.origin = origin;
 
         Node model = (Node) gameState.assetManager
@@ -88,10 +88,5 @@ public class Missile extends SpaceObject {
     public void destroy() {
         new ExplosionEffect(gameState, this, isArmed ? 0.002f : .00005f);
         super.destroy();
-    }
-
-    @Override
-    protected boolean isCollidable() {
-        return false;
     }
 }

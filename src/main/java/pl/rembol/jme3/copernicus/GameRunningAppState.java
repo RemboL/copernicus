@@ -45,7 +45,7 @@ public class GameRunningAppState extends AbstractAppState {
 
         new ConfigLoader(gameState).loadFromFile("solar_system.yml");
 
-        Ship bumblebee = new Ship(gameState, "bumblebee/bumblebee.blend", .003f);
+        Ship bumblebee = new Ship(gameState, "bumblebee/bumblebee.blend", .003f, 1f);
         gameState.focusCamera.setFocusAt(bumblebee);
 
         gameState.controlledShip = bumblebee;
@@ -54,31 +54,18 @@ public class GameRunningAppState extends AbstractAppState {
 //        bumblebee.setPrecisePosition(new Vector3d(8f, -2d, 149_565_000d));
         bumblebee.accelerate(new Vector3d(33.14f, 0, 0));
 
-        Ship bumblebee2 = new Ship(gameState, "bumblebee/bumblebee.blend", .003f);
-        bumblebee2.setPrecisePosition(new Vector3d(227_936_637.01d, 0d, 35_000d));
-        bumblebee2.accelerate(new Vector3d(33.14f, 0, 0));
-//        bumblebee2.accelerate(new Vector3d(33.14f, 0, 0));
-//        bumblebee2.addControl(new AbstractControl() {
-//            float ttl = 5f;
-//
-//            @Override
-//            protected void controlUpdate(float tpf) {
-//                bumblebee2.yawRight(tpf / 10);
-//                ttl -= tpf;
-//                if (ttl < 0) {
-//                    new Missile(gameState, bumblebee2);
-//                    ttl = 1f;
-//                }
-//            }
-//
-//            @Override
-//            protected void controlRender(RenderManager rm, ViewPort vp) {
-//
-//            }
-//        });
+        int n = 5;
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 1; j <= n; ++j) {
+                for (int k = 1; k <= n; ++k) {
+                    Ship bumblebee2 = new Ship(gameState, "bumblebee/bumblebee.blend", .003f, .2f);
+                    bumblebee2.setPrecisePosition(new Vector3d(.007d * i + 227_936_637d, .007d * k, .007d * j + 35_000d));
+                    bumblebee2.accelerate(new Vector3d(33.14f, 0, 0));
+                    gameState.selectionManager.select(bumblebee2);
+                }
+            }
+        }
 
-        gameState.selectionManager.select(gameState.stellarSystem.getObjectForName("Mars"));
-//        gameState.selectionManager.select(bumblebee2);
     }
 
 

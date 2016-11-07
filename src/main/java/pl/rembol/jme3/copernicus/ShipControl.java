@@ -65,7 +65,8 @@ public class ShipControl extends InputListener<GameState> {
     private void throttleDown(float value) {
         if (gameState.controlledShip != null) {
             gameState.controlledShip.disableAutoPilot();
-            gameState.controlledShip.throttleDown(value);
+//            gameState.controlledShip.throttleDown(value);
+            gameState.controlledShip.stopEngines();
         }
     }
 

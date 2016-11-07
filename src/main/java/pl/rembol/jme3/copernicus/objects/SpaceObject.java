@@ -12,18 +12,15 @@ abstract public class SpaceObject extends Node {
 
     protected final Node innerNode = new Node();
 
-    protected double radius;
-
     Vector3d velocity = new Vector3d(0, 0, 0);
 
     protected boolean isDestroyed = false;
 
     private KeepTranslationRelativeToCameraFocusControl control;
 
-    public SpaceObject(GameState gameState, String name, double radius) {
+    public SpaceObject(GameState gameState, String name) {
         super(name);
         this.gameState = gameState;
-        this.radius = radius;
 
         control = createTranslationControl();
         addControl(control);
@@ -71,14 +68,6 @@ abstract public class SpaceObject extends Node {
 
     public boolean isDestroyed() {
         return isDestroyed;
-    }
-
-    protected boolean isCollidable() {
-        return true;
-    }
-
-    public double getRadius() {
-        return radius;
     }
 
     protected AstralObject getGravityWellCenter() {

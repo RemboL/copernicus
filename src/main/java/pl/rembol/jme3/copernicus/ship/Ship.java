@@ -13,19 +13,20 @@ import pl.rembol.jme3.copernicus.GameState;
 import pl.rembol.jme3.copernicus.effects.ExplosionEffect;
 import pl.rembol.jme3.copernicus.engine_fire.EngineFire;
 import pl.rembol.jme3.copernicus.missile.Missile;
+import pl.rembol.jme3.copernicus.objects.CollidableSpaceObject;
 import pl.rembol.jme3.copernicus.objects.KeepTranslationRelativeToCameraFocusControl;
 import pl.rembol.jme3.copernicus.objects.SpaceObject;
 import pl.rembol.jme3.copernicus.ship.maneuver.ManeuveringControl;
 import pl.rembol.jme3.copernicus.ship.maneuver.WithManeuveringControl;
 
-public class Ship extends SpaceObject implements WithManeuveringControl {
+public class Ship extends CollidableSpaceObject implements WithManeuveringControl {
 
     private float maxAcceleration = 1f;
 
     private float acceleration = 0f;
 
-    public Ship(GameState gameState, String modelName, double radius) {
-        super(gameState, modelName, radius);
+    public Ship(GameState gameState, String modelName, double radius, double mass) {
+        super(gameState, modelName, radius, mass);
 
         Node model = (Node) gameState.assetManager
                 .loadModel(modelName);
