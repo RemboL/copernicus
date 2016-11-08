@@ -25,6 +25,8 @@ public class Ship extends CollidableSpaceObject implements WithManeuveringContro
 
     private float acceleration = 0f;
 
+    private int hp = 1000;
+
     public Ship(GameState gameState, String modelName, double radius, double mass) {
         super(gameState, modelName, radius, mass);
 
@@ -158,5 +160,12 @@ public class Ship extends CollidableSpaceObject implements WithManeuveringContro
 
     public Missile fireMissile() {
         return new Missile(gameState, this);
+    }
+
+    public void hit(double force, Vector3d direction) {
+        hp -= (int) force;
+        if (hp <= 0) {
+            destroy();
+        }
     }
 }

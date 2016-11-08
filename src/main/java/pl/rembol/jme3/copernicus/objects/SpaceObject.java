@@ -79,4 +79,7 @@ abstract public class SpaceObject extends Node {
 
         return control.getGravityWellCenter();
     }
+
+    public void hit(double force, Vector3d direction) {
+    }
 }

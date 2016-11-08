@@ -58,7 +58,7 @@ public class GameRunningAppState extends AbstractAppState {
         for (int i = 1; i <= n; ++i) {
             for (int j = 1; j <= n; ++j) {
                 for (int k = 1; k <= n; ++k) {
-                    Ship bumblebee2 = new Ship(gameState, "bumblebee/bumblebee.blend", .003f, .2f);
+                    Ship bumblebee2 = new Ship(gameState, "bumblebee/bumblebee.blend", .003f, 1f);
                     bumblebee2.setPrecisePosition(new Vector3d(.007d * i + 227_936_637d, .007d * k, .007d * j + 35_000d));
                     bumblebee2.accelerate(new Vector3d(33.14f, 0, 0));
                     gameState.selectionManager.select(bumblebee2);

@@ -72,6 +72,9 @@ public class GravityAppState extends AbstractAppState {
 
                     nextPositions.get(object1).addLocal(collisionDirection.mult(collisionDistance * (-1)));
                     nextPositions.get(object2).addLocal(collisionDirection.mult(collisionDistance));
+
+                    object1.hit(relativeVelocityLength * (object1.getMass() + object2.getMass()), nextPositions.get(object2));
+                    object2.hit(relativeVelocityLength * (object1.getMass() + object2.getMass()), nextPositions.get(object1));
                 }
             }
         }

@@ -27,6 +27,8 @@ public class Missile extends SpaceObject {
 
     private boolean isArmed = false;
 
+    private float yield = 100f;
+
     public Missile(GameState gameState, SpaceObject origin) {
         super(gameState, "ship");
         this.origin = origin;
@@ -67,7 +69,10 @@ public class Missile extends SpaceObject {
             if (isArmed) {
                 List<SpaceObject> objects = gameState.gravityAppState.getObjectsInProximity(getPrecisePosition(), PROXIMITY_DISTANCE);
                 if (!objects.isEmpty()) {
-                    objects.forEach(SpaceObject::destroy);
+//                    objects.forEach(SpaceObject::destroy);
+                    objects.forEach(spaceObject -> spaceObject.hit(yield, getPrecisePosition()));
+
+                    accelerate(objects.stream().map(SpaceObject::getVelocity).reduce(Vector3d.ZERO, Vector3d::add).divide(objects.size()).subtract(getVelocity()));
                     destroy();
                 }
             }
@@ -87,6 +92,7 @@ public class Missile extends SpaceObject {
     @Override
     public void destroy() {
         new ExplosionEffect(gameState, this, isArmed ? 0.002f : .00005f);
+
         super.destroy();
     }
 }
