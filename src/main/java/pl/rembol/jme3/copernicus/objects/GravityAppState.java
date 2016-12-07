@@ -1,13 +1,13 @@
 package pl.rembol.jme3.copernicus.objects;
 
-import com.jme3.app.state.AbstractAppState;
-import com.jme3.scene.plugins.blender.math.Vector3d;
-import pl.rembol.jme3.copernicus.GameState;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import com.jme3.app.state.AbstractAppState;
+import com.jme3.scene.plugins.blender.math.Vector3d;
+import pl.rembol.jme3.copernicus.GameState;
 
 public class GravityAppState extends AbstractAppState {
 
@@ -36,7 +36,7 @@ public class GravityAppState extends AbstractAppState {
 
         checkCollisions(gameState.controlledShip.getPrecisePosition());
 
-        currentPositions.putAll(nextPositions);
+        nextPositions.entrySet().forEach(entry -> currentPositions.put(entry.getKey(), entry.getValue().clone()));
     }
 
     protected void checkCollisions(Vector3d controlledShipPosition) {
@@ -54,11 +54,13 @@ public class GravityAppState extends AbstractAppState {
                 CollidableSpaceObject object1 = collisionCandidates.get(i);
                 CollidableSpaceObject object2 = collisionCandidates.get(j);
 
-                if (object1.getVelocity().length() > object1.getRadius() ||
-                        object2.getVelocity().length() > object2.getRadius()) {
+                Vector3d object1positionChange = nextPositions.get(object1).subtract(currentPositions.get(object1));
+                Vector3d object2positionChange = nextPositions.get(object2).subtract(currentPositions.get(object2));
+
+                if (object1positionChange.distance(object2positionChange)
+                        > (object1.getRadius() + object2.getRadius()) / 2) {
                     checkFastMovingCollision(object1, object2);
                 } else {
-
                     checkSphericalCollision(object1, object2);
                 }
             }
@@ -66,24 +68,26 @@ public class GravityAppState extends AbstractAppState {
     }
 
     private void checkFastMovingCollision(CollidableSpaceObject object1, CollidableSpaceObject object2) {
+        Vector3d object1positionChange = nextPositions.get(object1).subtract(currentPositions.get(object1));
+        Vector3d object2positionChange = nextPositions.get(object2).subtract(currentPositions.get(object2));
         if (currentPositions.get(object1).distance(currentPositions.get(object2))
-                > object1.getVelocity().distance(object2.getVelocity()) + object1.getRadius() + object2.getRadius()) {
+                > object1positionChange.distance(object2positionChange) + object1.getRadius() + object2.getRadius()) {
             // no chance of collision
             return;
         }
 
-        Vector3d x0 = currentPositions.get(object2);
-        Vector3d x1 = currentPositions.get(object1);
-        Vector3d x2 = nextPositions.get(object1);
+        Vector3d b1 = currentPositions.get(object2);
+        Vector3d a1 = currentPositions.get(object1);
+        Vector3d a2 = nextPositions.get(object1);
 
-        x2 = x2.subtract(x1).subtract(object2.getVelocity());
-        x0 = x0.subtract(x1);
+        a2 = a2.subtract(a1).subtract(object2positionChange);
+        b1 = b1.subtract(a1);
 
         Double r = object1.getRadius() + object2.getRadius();
 
-        Double a = x2.lengthSquared();
-        Double b = -2 * x0.dot(x2);
-        Double c = x0.lengthSquared() - r * r;
+        Double a = a2.lengthSquared();
+        Double b = -2 * a2.dot(b1);
+        Double c = b1.lengthSquared() - r * r;
 
         Double delta = b * b - 4 * a * c;
 
@@ -96,7 +100,6 @@ public class GravityAppState extends AbstractAppState {
             return;
         }
         Double t = (-b - Math.sqrt(delta)) / (2 * a);
-        System.out.println("t "+t);
 
         if (t < 0 || t > 1) {
             // no collission
@@ -115,13 +118,11 @@ public class GravityAppState extends AbstractAppState {
 
         Vector3d collisionDirection = object1PositionOnCollision.subtract(object2PositionOnCollision).normalizeLocal();
 
-        object1.accelerate(collisionDirection.mult(relativeVelocityLength * (-1) * 2 * object2.getMass() / (object1.getMass() + object2.getMass())));
-        object2.accelerate(collisionDirection.mult(relativeVelocityLength * 2 * object1.getMass() / (object1.getMass() + object2.getMass())));
+        object1.accelerate(collisionDirection.mult(
+                relativeVelocityLength * 2 * object2.getMass() / (object1.getMass() + object2.getMass())));
+        object2.accelerate(collisionDirection.mult(
+                relativeVelocityLength * (-1) * 2 * object1.getMass() / (object1.getMass() + object2.getMass())));
 
-        nextPositions.put(object1, object1PositionOnCollision);
-        nextPositions.put(object2, object2PositionOnCollision);
-
-        System.out.println("!@#!@#");
         object1.hit(relativeVelocityLength * (object1.getMass() + object2.getMass()), nextPositions.get(object2));
         object2.hit(relativeVelocityLength * (object1.getMass() + object2.getMass()), nextPositions.get(object1));
 
