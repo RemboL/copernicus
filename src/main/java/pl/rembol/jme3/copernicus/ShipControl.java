@@ -1,68 +1,72 @@
 package pl.rembol.jme3.copernicus;
 
+import com.jme3.math.Vector2f;
 import pl.rembol.jme3.copernicus.selection.window.SelectionWindow;
 import pl.rembol.jme3.copernicus.ship.maneuver.MatchSpeedManeuver;
 import pl.rembol.jme3.copernicus.ship.maneuver.OrientShipManeuver;
-import pl.rembol.jme3.game.input.InputListener;
-import pl.rembol.jme3.game.input.KeyInputManager;
-import pl.rembol.jme3.game.input.MouseInputManager;
 
-public class ShipControl extends InputListener<GameState> {
+public class ShipControl {
+
+    public static final float MOUSEFLIGHT_DEADZONE = .1f;
+    
+    private boolean mouseFlight = false;
+
+    private final GameState gameState;
 
     public ShipControl(GameState gameState) {
-        super(gameState);
+        this.gameState = gameState;
     }
 
-    private void yawLeft(float value) {
+    public void yawLeft(float value) {
         if (gameState.controlledShip != null) {
             gameState.controlledShip.disableAutoPilot();
             gameState.controlledShip.yawLeft(value);
         }
     }
 
-    private void yawRight(float value) {
+    public void yawRight(float value) {
         if (gameState.controlledShip != null) {
             gameState.controlledShip.disableAutoPilot();
             gameState.controlledShip.yawRight(value);
         }
     }
 
-    private void pitchUp(float value) {
+    public void pitchUp(float value) {
         if (gameState.controlledShip != null) {
             gameState.controlledShip.disableAutoPilot();
             gameState.controlledShip.pitchUp(value);
         }
     }
 
-    private void pitchDown(float value) {
+    public void pitchDown(float value) {
         if (gameState.controlledShip != null) {
             gameState.controlledShip.disableAutoPilot();
             gameState.controlledShip.pitchDown(value);
         }
     }
 
-    private void rollLeft(float value) {
+    public void rollLeft(float value) {
         if (gameState.controlledShip != null) {
             gameState.controlledShip.disableAutoPilot();
             gameState.controlledShip.rollLeft(value);
         }
     }
 
-    private void rollRight(float value) {
+    public void rollRight(float value) {
         if (gameState.controlledShip != null) {
             gameState.controlledShip.disableAutoPilot();
             gameState.controlledShip.rollRight(value);
         }
     }
 
-    private void throttleUp(float value) {
+    public void throttleUp(float value) {
         if (gameState.controlledShip != null) {
             gameState.controlledShip.disableAutoPilot();
             gameState.controlledShip.throttleUp(value);
         }
     }
 
-    private void throttleDown(float value) {
+    public void throttleDown(float value) {
         if (gameState.controlledShip != null) {
             gameState.controlledShip.disableAutoPilot();
 //            gameState.controlledShip.throttleDown(value);
@@ -70,77 +74,55 @@ public class ShipControl extends InputListener<GameState> {
         }
     }
 
-    private void fireMissile() {
+    public void fireMissile() {
         if (gameState.controlledShip != null) {
             gameState.controlledShip.disableAutoPilot();
             gameState.controlledShip.fireMissile();
         }
     }
 
-    private void matchSpeedManeuver() {
+    public void matchSpeedManeuver() {
         if (gameState.controlledShip != null && gameState.selectionManager.getSelectedObject() != null) {
             gameState.controlledShip.setManeuver(new MatchSpeedManeuver(gameState.selectionManager.getSelectedObject()));
         }
     }
 
-    private void orientTowardsTargetManeuver() {
+    public void orientTowardsTargetManeuver() {
         if (gameState.controlledShip != null && gameState.selectionManager.getSelectedObject() != null) {
             gameState.controlledShip.setManeuver(new OrientShipManeuver(gameState.selectionManager.getSelectedObject()));
         }
     }
 
-    private void openSelectionWindow() {
+    public void openSelectionWindow() {
         gameState.windowManager.addWindowCentered(new SelectionWindow(gameState));
     }
 
-    @Override
-    public void onAnalog(String name, float value, float tpf) {
-        switch (name) {
-            case KeyInputManager.A:
-                yawLeft(value);
-                break;
-            case KeyInputManager.D:
-                yawRight(value);
-                break;
-            case KeyInputManager.W:
-                pitchUp(value);
-                break;
-            case KeyInputManager.S:
-                pitchDown(value);
-                break;
-            case KeyInputManager.Q:
-                rollLeft(value);
-                break;
-            case KeyInputManager.E:
-                rollRight(value);
-                break;
-            case MouseInputManager.MOUSE_SCROLL_UP:
-                throttleUp(value);
-                break;
-            case MouseInputManager.MOUSE_SCROLL_DOWN:
-                throttleDown(value);
-                break;
-        }
+    public void toggleMouseFlight() {
+        mouseFlight = !mouseFlight;
     }
 
-    @Override
-    public void onAction(String name, boolean isPressed, float tpf) {
-        if (isPressed) {
-            switch (name) {
-                case KeyInputManager.TAB:
-                    openSelectionWindow();
-                    break;
-                case KeyInputManager.M:
-                    matchSpeedManeuver();
-                    break;
-                case KeyInputManager.O:
-                    orientTowardsTargetManeuver();
-                    break;
-                case MouseInputManager.LEFT_CLICK:
-                    fireMissile();
-                    break;
+    public boolean isMouseFlight() {
+        return mouseFlight;
+    }
+
+    public void updateMouseFlight(float tpf) {
+        if (mouseFlight) {
+            float halfWidth = gameState.camera.getWidth() / 2;
+            float halfHeight = gameState.camera.getHeight() / 2;
+            Vector2f cursorPosition = new Vector2f(
+                    gameState.inputManager.getCursorPosition().x / halfWidth - 1,
+                    gameState.inputManager.getCursorPosition().y / halfHeight - 1);
+            if (cursorPosition.x < -MOUSEFLIGHT_DEADZONE) {
+                yawLeft(tpf * (-cursorPosition.x - MOUSEFLIGHT_DEADZONE) / (1 - MOUSEFLIGHT_DEADZONE));
+            } else if (cursorPosition.x > MOUSEFLIGHT_DEADZONE) {
+                yawRight(tpf * (cursorPosition.x - MOUSEFLIGHT_DEADZONE) / (1 - MOUSEFLIGHT_DEADZONE));
+            }
+
+            if (cursorPosition.y < -MOUSEFLIGHT_DEADZONE) {
+                pitchUp(tpf * (-cursorPosition.y - MOUSEFLIGHT_DEADZONE) / (1 - MOUSEFLIGHT_DEADZONE));
+            } else if (cursorPosition.y > MOUSEFLIGHT_DEADZONE) {
+                pitchDown(tpf * (cursorPosition.y - MOUSEFLIGHT_DEADZONE) / (1 - MOUSEFLIGHT_DEADZONE));
             }
         }
     }
-
 }

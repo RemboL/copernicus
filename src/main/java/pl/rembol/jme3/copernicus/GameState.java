@@ -39,7 +39,7 @@ public class GameState extends GenericGameState {
     }
 
     protected InputListener createInputListener() {
-        return new ShipControl(this);
+        return new CopernicusInputListener(this);
     }
 
 }

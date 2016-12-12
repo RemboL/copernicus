@@ -7,6 +7,7 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.light.AmbientLight;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.FastMath;
 import com.jme3.scene.plugins.blender.math.Vector3d;
 import com.jme3.system.AppSettings;
 import pl.rembol.jme3.copernicus.config.ConfigLoader;
@@ -62,10 +63,16 @@ public class GameRunningAppState extends AbstractAppState {
                     bumblebee2.setPrecisePosition(new Vector3d(.007d * i + 227_936_637d, .007d * k, .007d * j + 35_000d));
                     bumblebee2.accelerate(new Vector3d(33.14f, 0, 0));
                     gameState.selectionManager.select(bumblebee2);
+                    bumblebee2.rotate(FastMath.nextRandomFloat() * 5, FastMath.nextRandomFloat() * 5, FastMath.nextRandomFloat() * 5);
                 }
             }
         }
 
+    }
+
+    @Override
+    public void update(float tpf) {
+        gameState.shipControl.updateMouseFlight(tpf);        
     }
 
 

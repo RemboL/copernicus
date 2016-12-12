@@ -14,6 +14,10 @@ public class HUD extends Node {
         attachChild(autoPilotIndicator);
         autoPilotIndicator.setLocalTranslation(gameState.camera.getWidth() / 2, gameState.camera.getHeight() / 2, 0);
 
+        MouseFlightIndicator mouseFlightIndicator = new MouseFlightIndicator(gameState);
+        attachChild(mouseFlightIndicator);
+        mouseFlightIndicator.setLocalTranslation(gameState.camera.getWidth() - 150, 50, 0);
+
         gameState.guiNode.attachChild(this);
     }
 }
