@@ -1,18 +1,16 @@
 package pl.rembol.jme3.copernicus.selection.window;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
-import com.jme3.material.Material;
-import com.jme3.material.RenderState;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
-import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.control.AbstractControl;
-import com.jme3.scene.shape.Quad;
 import pl.rembol.jme3.copernicus.GameState;
 import pl.rembol.jme3.copernicus.objects.SpaceObject;
 import pl.rembol.jme3.copernicus.selection.SelectionTextUtils;
@@ -34,8 +32,8 @@ class SelectionRow extends Node implements Clickable {
     private BitmapText distanceText;
 
     private BitmapText velocityText;
-    
-    private SpaceObject object;
+
+    SpaceObject object;
 
     SelectionRow(GameState gameState, SelectionWindow parentWindow, SpaceObject spaceObject) {
         this.gameState = gameState;
@@ -54,15 +52,7 @@ class SelectionRow extends Node implements Clickable {
     }
 
     private void createShade() {
-        Geometry rectangle = new Geometry(name, new Quad(WIDTH, HEIGHT));
-        Material material = new Material(gameState.assetManager, "Common/MatDefs/Gui/Gui.j3md");
-        material.setColor("Color", new ColorRGBA(1f, 1f, 1f, .2f));
-        material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-
-        rectangle.setQueueBucket(RenderQueue.Bucket.Gui);
-        rectangle.setCullHint(CullHint.Never);
-        rectangle.setMaterial(material);
-        
+        Geometry rectangle = new Shade(gameState, name, WIDTH, HEIGHT);
         attachChild(rectangle);
     }
     
@@ -79,6 +69,18 @@ class SelectionRow extends Node implements Clickable {
     public void onClick() {
         gameState.selectionManager.select(object);
         parentWindow.close();
+    }
+
+    @Override
+    public void onRightClick() {
+        gameState.windowManager.addWindow(
+                new SelectionActionsWindow(gameState, "actions", parentWindow, createActions()),
+                gameState.inputManager.getCursorPosition());
+    }
+
+    private List<SelectionAction> createActions() {
+        return Arrays.asList(new MoveToAndMatchVelocityAction(gameState, this, 100_000d),
+                new MoveToAndMatchVelocityAction(gameState, this, 200_000d));
     }
 
     @Override

@@ -15,13 +15,12 @@ import pl.rembol.jme3.copernicus.engine_fire.EngineFire;
 import pl.rembol.jme3.copernicus.missile.Missile;
 import pl.rembol.jme3.copernicus.objects.CollidableSpaceObject;
 import pl.rembol.jme3.copernicus.objects.KeepTranslationRelativeToCameraFocusControl;
-import pl.rembol.jme3.copernicus.objects.SpaceObject;
 import pl.rembol.jme3.copernicus.ship.maneuver.ManeuveringControl;
 import pl.rembol.jme3.copernicus.ship.maneuver.WithManeuveringControl;
 
 public class Ship extends CollidableSpaceObject implements WithManeuveringControl {
 
-    private float maxAcceleration = 1f;
+    private float maxAcceleration = 100000f;
 
     private float acceleration = 0f;
 
@@ -48,6 +47,10 @@ public class Ship extends CollidableSpaceObject implements WithManeuveringContro
 
     public float getAcceleration() {
         return acceleration;
+    }
+    
+    public float getMaxAcceleration() {
+        return maxAcceleration;
     }
 
     private class AlwaysMoveForwardControl extends AbstractControl {

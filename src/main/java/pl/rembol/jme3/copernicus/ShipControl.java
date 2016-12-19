@@ -1,8 +1,10 @@
 package pl.rembol.jme3.copernicus;
 
 import com.jme3.math.Vector2f;
+import pl.rembol.jme3.copernicus.objects.SpaceObject;
 import pl.rembol.jme3.copernicus.selection.window.SelectionWindow;
 import pl.rembol.jme3.copernicus.ship.maneuver.MatchSpeedManeuver;
+import pl.rembol.jme3.copernicus.ship.maneuver.MoveToAndMatchVelocityManeuver;
 import pl.rembol.jme3.copernicus.ship.maneuver.OrientShipManeuver;
 
 public class ShipControl {
@@ -84,12 +86,21 @@ public class ShipControl {
     public void matchSpeedManeuver() {
         if (gameState.controlledShip != null && gameState.selectionManager.getSelectedObject() != null) {
             gameState.controlledShip.setManeuver(new MatchSpeedManeuver(gameState.selectionManager.getSelectedObject()));
+            disableMouseFlight();
         }
     }
 
     public void orientTowardsTargetManeuver() {
         if (gameState.controlledShip != null && gameState.selectionManager.getSelectedObject() != null) {
             gameState.controlledShip.setManeuver(new OrientShipManeuver(gameState.selectionManager.getSelectedObject()));
+            disableMouseFlight();
+        }
+    }
+    
+    public void moveToAndMatchVelocityManeuver(SpaceObject spaceObject, double distance) {
+        if (gameState.controlledShip != null && gameState.selectionManager.getSelectedObject() != null) {
+            gameState.controlledShip.setManeuver(new MoveToAndMatchVelocityManeuver(spaceObject, distance));
+            disableMouseFlight();
         }
     }
 
@@ -97,8 +108,23 @@ public class ShipControl {
         gameState.windowManager.addWindowCentered(new SelectionWindow(gameState));
     }
 
+    public void disableMouseFlight() {
+        mouseFlight = false;
+    }
+    
+    public void enableMouseFlight() {
+        mouseFlight = true;
+        if (gameState.controlledShip != null) {
+            gameState.controlledShip.disableAutoPilot();
+        }
+    }
+    
     public void toggleMouseFlight() {
-        mouseFlight = !mouseFlight;
+        if (mouseFlight) {
+            disableMouseFlight();
+        } else {
+            enableMouseFlight();
+        }
     }
 
     public boolean isMouseFlight() {

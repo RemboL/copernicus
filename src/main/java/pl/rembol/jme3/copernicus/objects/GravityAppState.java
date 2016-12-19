@@ -34,18 +34,18 @@ public class GravityAppState extends AbstractAppState {
         currentPositions.keySet().forEach(spaceObject -> updateVelocity(spaceObject, tpf));
         currentPositions.keySet().forEach(spaceObject -> move(spaceObject, spaceObject.velocity.mult(tpf * SCALE)));
 
-        checkCollisions(gameState.controlledShip.getPrecisePosition());
+        checkCollisions(gameState.focusCamera.getCameraPosition());
 
         nextPositions.entrySet().forEach(entry -> currentPositions.put(entry.getKey(), entry.getValue().clone()));
     }
 
-    protected void checkCollisions(Vector3d controlledShipPosition) {
+    protected void checkCollisions(Vector3d cameraPosition) {
         List<CollidableSpaceObject> collisionCandidates = currentPositions.keySet()
                 .stream()
                 .filter(CollidableSpaceObject.class::isInstance)
                 .map(CollidableSpaceObject.class::cast)
                 .filter(spaceObject -> spaceObject.getPrecisePosition().distance(
-                        controlledShipPosition) < 1000)
+                        cameraPosition) < 1000)
                 .collect(Collectors.toList());
 
 
